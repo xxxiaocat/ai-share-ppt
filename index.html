@@ -1,0 +1,2160 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>传统企业 AI 转型之道：少走弯路 2.0</title>
+    <meta
+      name="description"
+      content="面向传统企业老板与高管的 AI 转型闭门分享 HTML PPT 2.0。"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;700;900&display=swap");
+
+      :root {
+        --stage-bg: #10182b;
+        --slide-bg: #1c2644;
+        --navy: #1c2644;
+        --navy-2: #232f55;
+        --navy-3: #151f38;
+        --cream: #f0ece3;
+        --cream-2: #e2dcd0;
+        --gold: #c8a870;
+        --gold-2: #ead4a5;
+        --muted: #96a1b5;
+        --line: rgba(240, 236, 227, 0.18);
+        --line-strong: rgba(200, 168, 112, 0.5);
+        --danger: #d97972;
+        --success: #9fcfbb;
+        --shadow: 0 34px 90px rgba(5, 8, 18, 0.34);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--stage-bg);
+      }
+
+      body {
+        font-family: "DM Sans", "Noto Serif SC", sans-serif;
+      }
+
+      .deck-viewport {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(200, 168, 112, 0.15), transparent 34%),
+          radial-gradient(circle at 88% 78%, rgba(55, 70, 120, 0.42), transparent 42%),
+          var(--stage-bg);
+      }
+
+      .deck-stage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: 0 0;
+        background: var(--slide-bg);
+        box-shadow: 0 30px 100px rgba(0, 0, 0, 0.45);
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: block;
+        visibility: hidden;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        background: var(--slide-bg);
+        color: var(--cream);
+      }
+
+      .slide.active,
+      .slide.visible {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(240, 236, 227, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(240, 236, 227, 0.035) 1px, transparent 1px);
+        background-size: 80px 80px;
+        opacity: 0.48;
+      }
+
+      .slide::after {
+        content: "";
+        position: absolute;
+        inset: 72px;
+        border: 1px solid var(--line);
+        pointer-events: none;
+      }
+
+      .slide > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      img,
+      video,
+      canvas,
+      svg {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .masthead,
+      .footer {
+        position: absolute;
+        left: 118px;
+        right: 118px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 19px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .masthead {
+        top: 96px;
+      }
+
+      .footer {
+        bottom: 92px;
+        font-size: 16px;
+      }
+
+      .mark,
+      .kicker,
+      .eyebrow,
+      .page,
+      .gold {
+        color: var(--gold);
+      }
+
+      .content {
+        position: absolute;
+        left: 118px;
+        top: 214px;
+        width: 1504px;
+      }
+
+      .wide-content {
+        width: 1684px;
+      }
+
+      .cover .content {
+        top: 246px;
+        width: 1190px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      ul,
+      ol {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      .statement-text,
+      .formula {
+        font-family: "Noto Serif SC", serif;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--cream);
+        font-size: 112px;
+        font-weight: 900;
+        line-height: 1.07;
+      }
+
+      h1 em,
+      h2 em {
+        color: var(--gold);
+        font-style: normal;
+      }
+
+      h2 {
+        max-width: 1340px;
+        margin: 0 0 40px;
+        color: var(--cream);
+        font-size: 70px;
+        font-weight: 900;
+        line-height: 1.14;
+      }
+
+      h3 {
+        margin: 0 0 14px;
+        color: var(--cream);
+        font-size: 33px;
+        line-height: 1.22;
+      }
+
+      p,
+      li {
+        color: var(--cream-2);
+        font-size: 24px;
+        line-height: 1.46;
+      }
+
+      ul,
+      ol {
+        margin-bottom: 0;
+        padding-left: 1.18em;
+      }
+
+      li {
+        margin: 9px 0;
+      }
+
+      strong {
+        color: var(--cream);
+      }
+
+      .kicker,
+      .eyebrow {
+        margin: 0 0 26px;
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+
+      .subtitle {
+        width: 980px;
+        margin-top: 38px;
+        color: var(--cream-2);
+        font-size: 34px;
+        line-height: 1.5;
+      }
+
+      .speaker {
+        position: absolute;
+        left: 118px;
+        bottom: 106px;
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .speaker strong {
+        display: block;
+        color: var(--cream);
+        font-size: 38px;
+        line-height: 1;
+      }
+
+      .speaker span {
+        color: var(--muted);
+        font-size: 23px;
+      }
+
+      .rule {
+        height: 1px;
+        background: var(--gold);
+      }
+
+      .side-panel {
+        position: absolute;
+        right: 118px;
+        top: 252px;
+        width: 395px;
+        height: 602px;
+        border-left: 1px solid var(--line);
+        padding-left: 42px;
+      }
+
+      .panel-item {
+        padding: 0 0 42px;
+        margin-bottom: 38px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .panel-item b {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 22px;
+      }
+
+      .panel-item span {
+        color: var(--cream);
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .cover-badge {
+        position: absolute;
+        right: 118px;
+        bottom: 106px;
+        display: grid;
+        width: 395px;
+        height: 86px;
+        place-items: center;
+        border: 1px solid rgba(200, 168, 112, 0.55);
+        color: rgba(240, 236, 227, 0.66);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 17px;
+        letter-spacing: 0.08em;
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        display: grid;
+        gap: 24px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card,
+      .panel,
+      .quote-box,
+      .formula-card,
+      .worksheet,
+      .table-card,
+      .tool-pill,
+      .voice,
+      .case-step,
+      .ledger-row,
+      .story-card {
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+          rgba(255, 255, 255, 0.035);
+        box-shadow: var(--shadow);
+      }
+
+      .card,
+      .panel {
+        min-height: 240px;
+        padding: 34px;
+      }
+
+      .card.accent,
+      .panel.accent,
+      .case-step.accent,
+      .tool-pill.hot {
+        border-color: var(--line-strong);
+        background:
+          linear-gradient(135deg, rgba(200, 168, 112, 0.2), rgba(255, 255, 255, 0.04)),
+          rgba(255, 255, 255, 0.045);
+      }
+
+      .tag,
+      .num,
+      .icon-num {
+        display: inline-grid;
+        min-width: 54px;
+        height: 46px;
+        margin-bottom: 24px;
+        padding: 0 14px;
+        place-items: center;
+        border: 1px solid rgba(200, 168, 112, 0.42);
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .card p,
+      .panel p {
+        margin-bottom: 0;
+      }
+
+      .card b {
+        display: block;
+        margin-top: 20px;
+        color: var(--gold-2);
+        font-size: 23px;
+        line-height: 1.34;
+      }
+
+      .bottom-line,
+      .note-strip,
+      .closing-line,
+      .asset-equation {
+        margin-top: 30px;
+        padding: 22px 28px;
+        border-left: 4px solid var(--gold);
+        background: rgba(200, 168, 112, 0.12);
+        color: var(--cream);
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.4;
+      }
+
+      .statement-slide .content {
+        top: 190px;
+      }
+
+      .statement-text {
+        max-width: 1320px;
+        padding: 48px 54px;
+        border: 1px solid rgba(240, 236, 227, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--cream);
+        font-size: 58px;
+        font-weight: 900;
+        line-height: 1.24;
+      }
+
+      .metric-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        width: 990px;
+        margin-top: 36px;
+      }
+
+      .metric-strip div {
+        padding: 24px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .metric-strip strong {
+        display: block;
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 52px;
+        line-height: 1;
+      }
+
+      .metric-strip span {
+        display: block;
+        margin-top: 10px;
+        color: var(--cream);
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .tool-wall {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 16px;
+        width: 1460px;
+      }
+
+      .tool-pill {
+        display: grid;
+        min-height: 86px;
+        place-items: center;
+        color: var(--cream);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 26px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .tool-pill.dim {
+        color: rgba(240, 236, 227, 0.48);
+      }
+
+      .voice-stack {
+        display: grid;
+        gap: 20px;
+        width: 1320px;
+      }
+
+      .voice {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 28px;
+        align-items: center;
+        min-height: 138px;
+        padding: 28px 34px;
+      }
+
+      .voice b {
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 32px;
+      }
+
+      .voice span {
+        color: var(--cream);
+        font-family: "Noto Serif SC", serif;
+        font-size: 42px;
+        font-weight: 900;
+        line-height: 1.24;
+      }
+
+      .pain-meter {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        width: 1390px;
+      }
+
+      .pain-meter article {
+        min-height: 290px;
+        padding: 34px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .pain-meter strong {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--gold);
+        font-size: 54px;
+        line-height: 1;
+      }
+
+      .pain-meter span {
+        display: block;
+        margin-bottom: 18px;
+        color: var(--cream);
+        font-size: 30px;
+        font-weight: 900;
+      }
+
+      .question-stack {
+        display: grid;
+        gap: 18px;
+        width: 1430px;
+      }
+
+      .question {
+        display: grid;
+        grid-template-columns: 92px 0.78fr 1fr;
+        gap: 28px;
+        align-items: center;
+        min-height: 148px;
+        padding: 26px 30px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .question .q {
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 34px;
+        font-weight: 900;
+      }
+
+      .question h3,
+      .question p {
+        margin: 0;
+      }
+
+      .question h3 {
+        font-size: 31px;
+      }
+
+      .model-map {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 130px minmax(0, 1fr);
+        gap: 28px;
+        align-items: center;
+      }
+
+      .model-layer {
+        min-height: 360px;
+        padding: 44px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.055);
+      }
+
+      .model-layer span {
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .model-layer strong {
+        display: block;
+        margin: 28px 0 22px;
+        color: var(--cream);
+        font-family: "Noto Serif SC", serif;
+        font-size: 43px;
+        line-height: 1.22;
+      }
+
+      .connector {
+        display: grid;
+        width: 130px;
+        height: 130px;
+        place-items: center;
+        border: 1px solid var(--line-strong);
+        color: var(--gold);
+        font-size: 26px;
+        font-weight: 900;
+      }
+
+      .roadmap {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 28px;
+        margin-top: 12px;
+      }
+
+      .roadmap::before {
+        content: "";
+        position: absolute;
+        left: 10%;
+        right: 10%;
+        top: 56px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      }
+
+      .roadmap .card {
+        position: relative;
+        padding-top: 94px;
+      }
+
+      .roadmap .time {
+        position: absolute;
+        top: 26px;
+        left: 34px;
+        padding: 8px 13px;
+        border: 1px solid var(--line-strong);
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 800;
+      }
+
+      .scenario-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .scenario {
+        min-height: 138px;
+        padding: 26px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .scenario strong {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--cream);
+        font-size: 27px;
+      }
+
+      .scenario span {
+        color: var(--cream-2);
+        font-size: 22px;
+        line-height: 1.36;
+      }
+
+      .criteria-row,
+      .score-guide {
+        display: flex;
+        gap: 14px;
+        margin-top: 30px;
+      }
+
+      .criteria-row span,
+      .score-guide span {
+        padding: 11px 16px;
+        border: 1px solid var(--line-strong);
+        color: var(--gold-2);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 19px;
+        font-weight: 800;
+      }
+
+      .case-flow {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        width: 1460px;
+      }
+
+      .case-step {
+        min-height: 170px;
+        padding: 26px;
+      }
+
+      .case-step b {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 20px;
+      }
+
+      .case-step span {
+        color: var(--cream);
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.25;
+      }
+
+      .case-step p {
+        margin: 12px 0 0;
+        font-size: 21px;
+      }
+
+      .case-board {
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        gap: 26px;
+        width: 1460px;
+      }
+
+      .case-board .panel {
+        min-height: 430px;
+      }
+
+      .ledger {
+        display: grid;
+        gap: 14px;
+        width: 1360px;
+      }
+
+      .ledger-row {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr;
+        min-height: 72px;
+        box-shadow: none;
+      }
+
+      .ledger-row span {
+        display: flex;
+        align-items: center;
+        padding: 16px 20px;
+        border-right: 1px solid var(--line);
+        color: var(--cream-2);
+        font-size: 22px;
+      }
+
+      .ledger-row span:last-child {
+        border-right: 0;
+      }
+
+      .ledger-row.head span {
+        color: var(--gold-2);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .ledger-row span:first-child {
+        color: var(--cream);
+        font-weight: 900;
+      }
+
+      .flow-compare {
+        display: grid;
+        gap: 34px;
+      }
+
+      .flow-group h3 {
+        margin-bottom: 16px;
+      }
+
+      .flow-line {
+        display: grid;
+        grid-template-columns: 1fr 40px 1fr 40px 1fr 40px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .flow-line span {
+        display: grid;
+        min-height: 88px;
+        place-items: center;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--cream);
+        font-size: 25px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .flow-line i {
+        height: 1px;
+        background: currentColor;
+      }
+
+      .muted-flow {
+        color: rgba(240, 236, 227, 0.32);
+      }
+
+      .muted-flow span {
+        color: rgba(240, 236, 227, 0.46);
+      }
+
+      .active-flow {
+        color: var(--gold);
+      }
+
+      .active-flow span {
+        border-color: var(--line-strong);
+        background: rgba(200, 168, 112, 0.13);
+      }
+
+      .asset-equation {
+        text-align: center;
+        font-size: 34px;
+      }
+
+      .pitfall-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .pitfall-list .card {
+        min-height: 230px;
+      }
+
+      .worksheet {
+        width: 1160px;
+        padding: 48px 56px;
+      }
+
+      .worksheet label {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--cream);
+        font-size: 25px;
+        font-weight: 800;
+      }
+
+      .blank-line {
+        height: 56px;
+        margin-bottom: 30px;
+        border-bottom: 2px dashed rgba(240, 236, 227, 0.32);
+      }
+
+      .score-row {
+        display: grid;
+        grid-template-columns: auto 1fr auto 1fr auto 1fr auto 1fr auto;
+        gap: 14px;
+        align-items: center;
+        color: var(--gold);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 23px;
+        font-weight: 900;
+      }
+
+      .score-row i {
+        height: 2px;
+        background: rgba(200, 168, 112, 0.38);
+      }
+
+      .table-card {
+        width: 1370px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+      }
+
+      .maturity-row {
+        display: grid;
+        grid-template-columns: 0.85fr repeat(3, 1fr);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .maturity-row:last-child {
+        border-bottom: 0;
+      }
+
+      .maturity-row span {
+        min-height: 76px;
+        padding: 20px 22px;
+        border-right: 1px solid var(--line);
+        color: var(--cream-2);
+        font-size: 24px;
+        line-height: 1.3;
+      }
+
+      .maturity-row span:last-child {
+        border-right: 0;
+      }
+
+      .maturity-row.head span {
+        background: rgba(200, 168, 112, 0.16);
+        color: var(--gold-2);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .maturity-row span:first-child {
+        color: var(--cream);
+        font-weight: 900;
+      }
+
+      .summary-ring {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        width: 1280px;
+        margin-bottom: 32px;
+      }
+
+      .summary-ring article {
+        min-height: 220px;
+        padding: 34px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .summary-ring strong {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--gold);
+        font-size: 32px;
+      }
+
+      .summary-ring span {
+        color: var(--cream-2);
+        font-size: 24px;
+        line-height: 1.38;
+      }
+
+      .small-note {
+        margin-top: 18px;
+        color: var(--muted);
+        font-family: "IBM Plex Mono", "Noto Serif SC", monospace;
+        font-size: 17px;
+        letter-spacing: 0.04em;
+      }
+
+      .progress-shell {
+        position: fixed;
+        left: 28px;
+        right: 28px;
+        bottom: 24px;
+        z-index: 900;
+        display: grid;
+        grid-template-columns: 120px 1fr 240px;
+        gap: 18px;
+        align-items: center;
+        color: rgba(240, 236, 227, 0.72);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 14px;
+        pointer-events: none;
+      }
+
+      .progress-track {
+        height: 4px;
+        overflow: hidden;
+        background: rgba(240, 236, 227, 0.18);
+      }
+
+      .progress-bar {
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, var(--gold), var(--cream));
+        transition: width 0.28s ease;
+      }
+
+      .deck-controls {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        z-index: 1000;
+        display: flex;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid rgba(240, 236, 227, 0.18);
+        background: rgba(15, 22, 39, 0.74);
+        transform: translateX(-50%);
+        backdrop-filter: blur(14px);
+      }
+
+      .deck-controls button,
+      .edit-toggle,
+      .export-button {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(240, 236, 227, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--cream);
+        cursor: pointer;
+        font: 800 18px/1 "IBM Plex Mono", monospace;
+      }
+
+      .deck-controls button:hover,
+      .edit-toggle:hover,
+      .export-button:hover {
+        border-color: var(--line-strong);
+        color: var(--gold);
+      }
+
+      .edit-hotzone {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        width: 90px;
+        height: 90px;
+        cursor: pointer;
+      }
+
+      .edit-toggle,
+      .export-button {
+        position: fixed;
+        top: 18px;
+        z-index: 10001;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+
+      .edit-toggle {
+        left: 18px;
+      }
+
+      .export-button {
+        left: 66px;
+      }
+
+      .edit-toggle.show,
+      .edit-toggle.active,
+      .export-button.show,
+      .export-button.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      body.editing .slide.visible [data-editable] {
+        outline: 2px dashed rgba(200, 168, 112, 0.7);
+        outline-offset: 6px;
+      }
+
+      .toast {
+        position: fixed;
+        right: 22px;
+        top: 22px;
+        z-index: 10002;
+        max-width: 360px;
+        padding: 13px 15px;
+        border: 1px solid rgba(200, 168, 112, 0.42);
+        background: rgba(17, 25, 45, 0.86);
+        color: var(--cream);
+        font-size: 14px;
+        opacity: 0;
+        transform: translateY(-8px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .slide.visible .reveal {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .slide.visible .delay-1 { transition-delay: 0.08s; }
+      .slide.visible .delay-2 { transition-delay: 0.16s; }
+      .slide.visible .delay-3 { transition-delay: 0.24s; }
+      .slide.visible .delay-4 { transition-delay: 0.32s; }
+
+      @media print {
+        html,
+        body {
+          width: 1920px;
+          height: auto;
+          overflow: visible;
+          background: #fff;
+        }
+
+        .deck-viewport {
+          position: static;
+          overflow: visible;
+          background: #fff;
+        }
+
+        .deck-stage {
+          position: static;
+          width: auto;
+          height: auto;
+          transform: none !important;
+          background: none;
+          box-shadow: none;
+        }
+
+        .slide {
+          position: relative;
+          display: block !important;
+          visibility: visible !important;
+          width: 1920px;
+          height: 1080px;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .slide:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+
+        .deck-controls,
+        .progress-shell,
+        .edit-hotzone,
+        .edit-toggle,
+        .export-button,
+        .toast {
+          display: none !important;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.2s !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deck-viewport">
+      <main class="deck-stage" id="deckStage"></main>
+    </div>
+
+    <div class="progress-shell" aria-hidden="true">
+      <span id="slideCounter">01 / 28</span>
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+      <span id="slideTitle">封面</span>
+    </div>
+
+    <div class="deck-controls" aria-label="翻页控制">
+      <button type="button" id="prevBtn" title="上一页">‹</button>
+      <button type="button" id="nextBtn" title="下一页">›</button>
+      <button type="button" id="printBtn" title="打印 / 导出 PDF">P</button>
+    </div>
+
+    <div class="edit-hotzone" aria-hidden="true"></div>
+    <button class="edit-toggle" id="editToggle" type="button" title="编辑模式 E">E</button>
+    <button class="export-button" id="exportButton" type="button" title="下载当前 HTML">↓</button>
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const slides = [
+        {
+          title: "封面",
+          className: "cover",
+          mastheadLeft: "Enterprise AI Briefing",
+          mastheadRight: "2.0 · Closed Session",
+          body: String.raw`
+            <div class="content">
+              <p class="kicker reveal delay-1" data-editable>传统企业老板 / 高管闭门分享</p>
+              <h1 class="reveal delay-2" data-editable>传统企业 AI 转型之道：<em>少走弯路</em></h1>
+              <p class="subtitle reveal delay-3" data-editable>
+                从"工具焦虑"回到"业务场景"：先找到一个能提效、能降本、能算清账的流程。
+              </p>
+            </div>
+            <div class="side-panel reveal delay-3">
+              <div class="panel-item"><b>01</b><span>戳痛点</span></div>
+              <div class="panel-item"><b>02</b><span>讲经历</span></div>
+              <div class="panel-item"><b>03</b><span>落案例</span></div>
+            </div>
+            <div class="speaker reveal delay-4">
+              <div class="rule"></div>
+              <div>
+                <strong data-editable>肖洒</strong>
+                <span data-editable>原银行金融业高级 AI 产品经理 · 现传统企业 AI 转型负责人</span>
+              </div>
+            </div>
+            <div class="cover-badge reveal delay-4">HOOK / STORY / ROI</div>
+          `
+        },
+        {
+          title: "工具清单",
+          mastheadLeft: "01 · 开场钩子",
+          mastheadRight: "The Tool Maze",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">01 · 开场钩子</p>
+              <h2 class="reveal delay-1" data-editable>很多 AI 课，第一步就把老板推进了"安装清单"。</h2>
+              <div class="tool-wall reveal delay-2">
+                <div class="tool-pill hot">VS Code</div>
+                <div class="tool-pill hot">Cursor</div>
+                <div class="tool-pill">Python</div>
+                <div class="tool-pill">Node.js</div>
+                <div class="tool-pill dim">Git / GitHub</div>
+                <div class="tool-pill">Docker</div>
+                <div class="tool-pill">Anaconda</div>
+                <div class="tool-pill">Jupyter</div>
+                <div class="tool-pill">Postman</div>
+                <div class="tool-pill dim">API Key</div>
+                <div class="tool-pill hot">Dify</div>
+                <div class="tool-pill">Coze</div>
+                <div class="tool-pill">FastGPT</div>
+                <div class="tool-pill">n8n</div>
+                <div class="tool-pill dim">LangChain</div>
+                <div class="tool-pill">Ollama</div>
+                <div class="tool-pill">LM Studio</div>
+                <div class="tool-pill">OpenWebUI</div>
+                <div class="tool-pill dim">Stable Diffusion</div>
+                <div class="tool-pill">Midjourney</div>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>不是这些工具没价值，而是老板不该从这里开始。</div>
+            </div>
+          `
+        },
+        {
+          title: "工具陷阱",
+          className: "statement-slide",
+          mastheadLeft: "02 · 先戳中他们",
+          mastheadRight: "Why It Feels Wrong",
+          body: String.raw`
+            <div class="content">
+              <p class="eyebrow reveal">02 · 先戳中他们</p>
+              <h2 class="reveal delay-1" data-editable>老板学会装环境，公司就完成 AI 转型了吗？</h2>
+              <div class="statement-text reveal delay-2" data-editable>
+                不是。那只是把企业的一把手，临时训练成半个工程师。
+              </div>
+              <div class="metric-strip reveal delay-3">
+                <div><strong>0</strong><span>业务流程改变</span></div>
+                <div><strong>0</strong><span>员工持续使用</span></div>
+                <div><strong>0</strong><span>ROI 可复盘</span></div>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "老板心声",
+          mastheadLeft: "03 · 真实痛点",
+          mastheadRight: "What Bosses Actually Say",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">03 · 真实痛点</p>
+              <h2 class="reveal delay-1" data-editable>很多老板听完课以后，真正卡住的是这三句话。</h2>
+              <div class="voice-stack">
+                <div class="voice reveal delay-2"><b>01</b><span data-editable>"我知道 AI 重要，但我不知道先改哪个流程。"</span></div>
+                <div class="voice reveal delay-3"><b>02</b><span data-editable>"员工试了几天，又回到微信、Excel 和人工催办。"</span></div>
+                <div class="voice reveal delay-4"><b>03</b><span data-editable>"账号买了、工具装了，但没人说得清到底省了多少钱。"</span></div>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "今天讲什么",
+          mastheadLeft: "04 · 从工具回到业务",
+          mastheadRight: "Promise",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">04 · 从工具回到业务</p>
+              <h2 class="reveal delay-1" data-editable>所以今天不讲"怎么装十个工具"，那讲什么？</h2>
+              <div class="pain-meter reveal delay-2">
+                <article>
+                  <strong>1</strong>
+                  <span data-editable>找痛点</span>
+                  <p data-editable>哪个环节每天重复、标准化、靠人催、靠人抄、靠人总结？</p>
+                </article>
+                <article>
+                  <strong>2</strong>
+                  <span data-editable>跑场景</span>
+                  <p data-editable>先把一个真实流程做成 MVP，而不是先买一堆账号。</p>
+                </article>
+                <article>
+                  <strong>3</strong>
+                  <span data-editable>算清账</span>
+                  <p data-editable>用时间、产出、差错、成本算 ROI；算不清就不要扩张。</p>
+                </article>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>老板要抓的是"转型路线"，不是"工具教程"。</div>
+            </div>
+          `
+        },
+        {
+          title: "讲师经历",
+          mastheadLeft: "05 · 不是理论课",
+          mastheadRight: "Experience Before Opinion",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">05 · 不是理论课</p>
+              <h2 class="reveal delay-1" data-editable>我为什么会这样讲：因为我见过两种完全不同的 AI 现场。</h2>
+              <div class="grid-2">
+                <article class="card reveal delay-2">
+                  <span class="tag">过去</span>
+                  <h3 data-editable>银行金融业 AI 产品经理</h3>
+                  <p data-editable>在金融行业，AI 项目天然绕不开流程、权限、数据、审计和 ROI。不能只演示，必须能被业务使用、能被复盘。</p>
+                </article>
+                <article class="card accent reveal delay-3">
+                  <span class="tag">现在</span>
+                  <h3 data-editable>传统企业 AI 转型负责人</h3>
+                  <p data-editable>进入传统企业后，我发现老板不是不重视 AI，而是很多培训把"企业转型"讲成了"个人装机"。</p>
+                </article>
+              </div>
+              <div class="note-strip reveal delay-4" data-editable>我的判断：传统企业最缺的不是工具清单，而是从一个场景跑通到组织复制的方法。</div>
+            </div>
+          `
+        },
+        {
+          title: "核心命题",
+          className: "statement-slide",
+          mastheadLeft: "Core Question",
+          mastheadRight: "Decision Before Tools",
+          body: String.raw`
+            <div class="content">
+              <p class="eyebrow reveal">Core Question</p>
+              <h2 class="reveal delay-1" data-editable>传统企业 AI 转型，老板真正要决策什么？</h2>
+              <div class="statement-text reveal delay-2" data-editable>
+                工具是术，转型是道。术解决"怎么用"，道解决"值不值得做、先做哪里、谁负责、怎么算账"。
+              </div>
+              <div class="metric-strip reveal delay-3">
+                <div><strong>1</strong><span>选场景</span></div>
+                <div><strong>2</strong><span>搭入口</span></div>
+                <div><strong>3</strong><span>建机制</span></div>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "三个误区",
+          mastheadLeft: "06 · 当前误区",
+          mastheadRight: "Wrong Starting Points",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">06 · 当前误区</p>
+              <h2 class="reveal delay-1" data-editable>多数企业不是败在不会用 AI，而是败在一开始就问错问题。</h2>
+              <div class="grid-3">
+                <article class="card reveal delay-2">
+                  <span class="num">01</span>
+                  <h3 data-editable>以为买课 = 落地</h3>
+                  <p data-editable>工具安装、功能演示、截图很热闹，但没有落到岗位任务和业务结果。</p>
+                  <b data-editable>本质：把"知道"当成"做到"。</b>
+                </article>
+                <article class="card reveal delay-3">
+                  <span class="num">02</span>
+                  <h3 data-editable>以为工具 = 方案</h3>
+                  <p data-editable>采购 API、部署开源框架，却没有嵌入流程、权限、数据和验收指标。</p>
+                  <b data-editable>本质：工具堆砌不等于流程重构。</b>
+                </article>
+                <article class="card reveal delay-4">
+                  <span class="num">03</span>
+                  <h3 data-editable>以为 AI 负责人 = 万能</h3>
+                  <p data-editable>招一个 AI 产品或工程师，就期待所有部门自动变聪明、自动提效。</p>
+                  <b data-editable>本质：转型需要业务配合和组织机制。</b>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "老板三问",
+          mastheadLeft: "07 · 老板真正该问",
+          mastheadRight: "Three Questions",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">07 · 老板真正该问</p>
+              <h2 class="reveal delay-1" data-editable>先别问"用哪个工具"，先问这三个问题。</h2>
+              <div class="question-stack">
+                <article class="question reveal delay-2">
+                  <span class="q">Q1</span>
+                  <h3 data-editable>哪个环节重复劳动最多、最标准化？</h3>
+                  <p data-editable>高频、规则清楚、输入输出稳定，是最适合先做 AI 的地方。</p>
+                </article>
+                <article class="question reveal delay-3">
+                  <span class="q">Q2</span>
+                  <h3 data-editable>我们的数据、文档、流程能不能支撑 AI 跑起来？</h3>
+                  <p data-editable>信息如果散在微信、个人电脑和口头经验里，AI 很难稳定产出。</p>
+                </article>
+                <article class="question reveal delay-4">
+                  <span class="q">Q3</span>
+                  <h3 data-editable>投入 X 万做 3 个月，能得到什么可衡量结果？</h3>
+                  <p data-editable>节省工时、提升产出、减少差错、释放人力，必须有一个能复盘的账本。</p>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "两层模型",
+          mastheadLeft: "08 · 理解模型",
+          mastheadRight: "Capability Into Workflow",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">08 · 理解模型</p>
+              <h2 class="reveal delay-1" data-editable>企业 AI 落地，就是把"智能能力"接到"业务动作"里。</h2>
+              <div class="model-map reveal delay-2">
+                <div class="model-layer">
+                  <span>智能能力</span>
+                  <strong data-editable>理解 · 总结 · 生成 · 判断 · 推理</strong>
+                  <p data-editable>DeepSeek / OpenAI / Claude 等模型提供能力，老板只需要知道选择原则和成本边界。</p>
+                </div>
+                <div class="connector">接入</div>
+                <div class="model-layer">
+                  <span>业务动作</span>
+                  <strong data-editable>查数据 · 填表 · 发消息 · 生成报告 · 提醒跟进</strong>
+                  <p data-editable>自动化工具、企微/飞书机器人、内部网页和业务系统负责把 AI 结果执行到流程里。</p>
+                </div>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>具体怎么配置，是 AI 负责人和技术团队的事；老板要决策的是先接到哪个流程。</div>
+            </div>
+          `
+        },
+        {
+          title: "三个决策",
+          mastheadLeft: "09 · 道大于术",
+          mastheadRight: "Owner Decisions",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">09 · 道大于术</p>
+              <h2 class="reveal delay-1" data-editable>老板只做三个决策，不需要学习十个工具。</h2>
+              <div class="grid-3">
+                <article class="card reveal delay-2">
+                  <span class="icon-num">01</span>
+                  <h3 data-editable>选切入点</h3>
+                  <p data-editable>高频、标准化、低风险、可衡量。先挑 1-2 个场景做 MVP。</p>
+                </article>
+                <article class="card accent reveal delay-3">
+                  <span class="icon-num">02</span>
+                  <h3 data-editable>搭基础设施</h3>
+                  <p data-editable>统一 API 账号、统一使用入口、统一负责人，避免每个人各玩各的。</p>
+                </article>
+                <article class="card reveal delay-4">
+                  <span class="icon-num">03</span>
+                  <h3 data-editable>建提效文化</h3>
+                  <p data-editable>考核"省了多少时间"，不考核"用了多少次 AI"。第一批试点员工要给激励。</p>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "三阶段路径",
+          mastheadLeft: "10 · 落地路径",
+          mastheadRight: "Three Phases",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">10 · 落地路径</p>
+              <h2 class="reveal delay-1" data-editable>AI 转型不要一步到位，分三阶段推进。</h2>
+              <div class="roadmap">
+                <article class="card reveal delay-2">
+                  <span class="time">2-4 周</span>
+                  <h3 data-editable>启蒙 + 试点</h3>
+                  <p data-editable>跑通一个 MVP，拿到第一组可量化提效数据。</p>
+                </article>
+                <article class="card accent reveal delay-3">
+                  <span class="time">1-3 个月</span>
+                  <h3 data-editable>工作流重构</h3>
+                  <p data-editable>把 AI 从"辅助工具"嵌入流程节点，减少人工搬运和等待。</p>
+                </article>
+                <article class="card reveal delay-4">
+                  <span class="time">长期</span>
+                  <h3 data-editable>组织能力建设</h3>
+                  <p data-editable>沉淀知识库、智能体、SOP 和内部 AI 能力中心。</p>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "试点清单",
+          mastheadLeft: "11 · 第一批场景",
+          mastheadRight: "MVP Candidate List",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">11 · 第一批场景</p>
+              <h2 class="reveal delay-1" data-editable>第一个 MVP，只选"高频、低风险、可验收"的小场景。</h2>
+              <div class="scenario-grid reveal delay-2">
+                <article class="scenario"><strong data-editable>销售跟进</strong><span data-editable>客户记录摘要、下一步建议、自动提醒</span></article>
+                <article class="scenario"><strong data-editable>会议纪要</strong><span data-editable>自动纪要、待办、责任人、风险点</span></article>
+                <article class="scenario"><strong data-editable>日报周报</strong><span data-editable>草稿生成、格式统一、重点提炼</span></article>
+                <article class="scenario"><strong data-editable>对账核对</strong><span data-editable>辅助校验异常、生成复核清单</span></article>
+                <article class="scenario"><strong data-editable>员工考核触达</strong><span data-editable>自动收集、自动提醒、人工兜底</span></article>
+                <article class="scenario"><strong data-editable>知识问答</strong><span data-editable>制度、FAQ、SOP 的内部检索入口</span></article>
+              </div>
+              <div class="criteria-row reveal delay-3">
+                <span>重复次数高</span>
+                <span>规则相对清楚</span>
+                <span>敏感风险低</span>
+                <span>两周能验收</span>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "案例：销售跟进",
+          mastheadLeft: "12 · 案例一",
+          mastheadRight: "Sales Follow-Up",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">12 · 案例一：直接关联营收</p>
+              <h2 class="reveal delay-1" data-editable>销售跟进助手：不是替销售聊天，而是让机会不再漏掉。</h2>
+              <div class="case-flow reveal delay-2">
+                <article class="case-step"><b>输入</b><span data-editable>客户记录 / 微信摘要 / CRM 字段</span><p data-editable>把散落信息先聚合。</p></article>
+                <article class="case-step"><b>判断</b><span data-editable>7 天未跟进、报价未回、异议未处理</span><p data-editable>AI 识别下一步动作。</p></article>
+                <article class="case-step accent"><b>输出</b><span data-editable>跟进优先级 + 话术草稿</span><p data-editable>销售确认后再发送。</p></article>
+                <article class="case-step"><b>复盘</b><span data-editable>跟进率、响应率、成交推进</span><p data-editable>用业务指标看效果。</p></article>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>老板会关心这个，因为它不是"员工少打一份字"，而是"销售机会少漏一点"。</div>
+            </div>
+          `
+        },
+        {
+          title: "案例：考核触达",
+          mastheadLeft: "13 · 案例二",
+          mastheadRight: "Digital Employee Reminder",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">13 · 案例二：管理提效</p>
+              <h2 class="reveal delay-1" data-editable>员工考核自动触达：从人工催办到数字员工提醒。</h2>
+              <div class="case-board">
+                <article class="panel reveal delay-2">
+                  <span class="tag">改造前</span>
+                  <h3 data-editable>人工导出、核对、触达员工</h3>
+                  <ol data-editable>
+                    <li>人工从系统导出数据</li>
+                    <li>手动核对达标情况</li>
+                    <li>逐个同步企微提醒</li>
+                    <li>每周重复，容易漏发漏核</li>
+                  </ol>
+                </article>
+                <article class="panel accent reveal delay-3">
+                  <span class="tag">改造后</span>
+                  <h3 data-editable>数字员工收集、判断、同步提醒</h3>
+                  <ol data-editable>
+                    <li>定时读取考核数据</li>
+                    <li>按规则识别不达标员工</li>
+                    <li>自动同步企微提醒</li>
+                    <li>异常情况交给人工复核</li>
+                  </ol>
+                </article>
+              </div>
+              <div class="bottom-line reveal delay-4" data-editable>这个场景的关键不是 AI 多聪明，而是规则清晰、低风险、能快速验收。</div>
+            </div>
+          `
+        },
+        {
+          title: "案例：会议周报",
+          mastheadLeft: "14 · 案例三",
+          mastheadRight: "Meeting To Execution",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">14 · 案例三：让会议变成动作</p>
+              <h2 class="reveal delay-1" data-editable>会议纪要 + 周报，不是写得更漂亮，而是让责任不丢。</h2>
+              <div class="case-flow reveal delay-2">
+                <article class="case-step"><b>会议后</b><span data-editable>自动提炼结论</span><p data-editable>谁说了什么不重要，形成什么决定重要。</p></article>
+                <article class="case-step"><b>待办</b><span data-editable>责任人 / 截止时间 / 风险点</span><p data-editable>从"记录"变成"跟进"。</p></article>
+                <article class="case-step accent"><b>周报</b><span data-editable>按项目自动汇总</span><p data-editable>减少管理层来回追问。</p></article>
+                <article class="case-step"><b>追踪</b><span data-editable>逾期提醒 + 异常升级</span><p data-editable>人做判断，系统做催办。</p></article>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>传统企业很多效率损耗，不在"不会写"，而在"说完没人跟"。</div>
+            </div>
+          `
+        },
+        {
+          title: "案例：财务对账",
+          mastheadLeft: "15 · 案例四",
+          mastheadRight: "Finance Reconciliation",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">15 · 案例四：低风险财务辅助</p>
+              <h2 class="reveal delay-1" data-editable>对账核对：AI 不做财务决策，只帮人更快发现异常。</h2>
+              <div class="case-board">
+                <article class="panel reveal delay-2">
+                  <span class="tag">适合 AI 的部分</span>
+                  <h3 data-editable>整理、匹配、标记异常</h3>
+                  <ul data-editable>
+                    <li>付款记录与发票、订单、出库单初步匹配</li>
+                    <li>金额差异、日期异常、重复记录自动标红</li>
+                    <li>生成待人工复核清单</li>
+                  </ul>
+                </article>
+                <article class="panel accent reveal delay-3">
+                  <span class="tag">必须人工兜底</span>
+                  <h3 data-editable>审批、确认、责任判断</h3>
+                  <ul data-editable>
+                    <li>涉及付款、冲销、客户承诺，最终由人确认</li>
+                    <li>保留日志，便于财务追溯</li>
+                    <li>先从低风险、重复核对任务切入</li>
+                  </ul>
+                </article>
+              </div>
+              <div class="bottom-line reveal delay-4" data-editable>高风险岗位也能用 AI，但第一步一定是"辅助核对"，不是"自动拍板"。</div>
+            </div>
+          `
+        },
+        {
+          title: "示例账本",
+          mastheadLeft: "16 · 示例 ROI",
+          mastheadRight: "Illustrative Ledger",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">16 · 示例 ROI</p>
+              <h2 class="reveal delay-1" data-editable>老板要看的不是功能列表，而是一张能复盘的账。</h2>
+              <div class="ledger reveal delay-2">
+                <div class="ledger-row head"><span>场景</span><span>人力节省</span><span>月成本</span><span>可观察收益</span></div>
+                <div class="ledger-row"><span>销售跟进助手</span><span>5 人 × 每周 2 小时</span><span>约数百元 API / 工具</span><span>跟进率、响应率提升</span></div>
+                <div class="ledger-row"><span>考核自动触达</span><span>每周 4-8 小时</span><span>低</span><span>漏发漏核减少</span></div>
+                <div class="ledger-row"><span>会议纪要 + 待办</span><span>管理层每周 3-6 小时</span><span>低</span><span>责任和截止时间清晰</span></div>
+                <div class="ledger-row"><span>对账异常清单</span><span>财务每月 1-2 天</span><span>中</span><span>异常更早暴露</span></div>
+              </div>
+              <p class="small-note reveal delay-3" data-editable>注：这里是示例估算。真实项目要用企业自己的频次、岗位时薪、系统成本重新计算。</p>
+            </div>
+          `
+        },
+        {
+          title: "流程重构",
+          mastheadLeft: "17 · 阶段二",
+          mastheadRight: "Workflow Redesign",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">17 · 阶段二</p>
+              <h2 class="reveal delay-1" data-editable>AI 不是贴在旧流程上的创可贴，而是重新设计流程的机会。</h2>
+              <div class="flow-compare reveal delay-2">
+                <div class="flow-group">
+                  <h3 data-editable>旧流程：人找信息</h3>
+                  <div class="flow-line muted-flow">
+                    <span>翻资料</span><i></i><span>查客户</span><i></i><span>写总结</span><i></i><span>提醒跟进</span>
+                  </div>
+                </div>
+                <div class="flow-group">
+                  <h3 data-editable>新流程：信息找人</h3>
+                  <div class="flow-line active-flow">
+                    <span>AI 扫描</span><i></i><span>提炼重点</span><i></i><span>推送建议</span><i></i><span>人工决策</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>客户数据主动触达的本质：从"被动搜索"变成"主动提醒该跟进谁"。</div>
+            </div>
+          `
+        },
+        {
+          title: "组织建设",
+          mastheadLeft: "18 · 阶段三",
+          mastheadRight: "Reusable Assets",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">18 · 阶段三</p>
+              <h2 class="reveal delay-1" data-editable>真正值钱的不是某个工具，而是组织可复用的 AI 资产。</h2>
+              <div class="grid-3">
+                <article class="card reveal delay-2">
+                  <span class="icon-num">A</span>
+                  <h3 data-editable>内部知识库</h3>
+                  <p data-editable>FAQ、话术、制度、文档、SOP 集中沉淀，解决"经验散落"。</p>
+                </article>
+                <article class="card accent reveal delay-3">
+                  <span class="icon-num">B</span>
+                  <h3 data-editable>企业智能体</h3>
+                  <p data-editable>企微/飞书机器人或内部网页入口，让员工直接问、直接用。</p>
+                </article>
+                <article class="card reveal delay-4">
+                  <span class="icon-num">C</span>
+                  <h3 data-editable>AI 能力中心</h3>
+                  <p data-editable>1-2 人负责场景挖掘、工具配置、培训赋能和效果复盘。</p>
+                </article>
+              </div>
+              <div class="asset-equation reveal delay-4" data-editable>个人尝鲜 → 团队流程 → 组织资产</div>
+            </div>
+          `
+        },
+        {
+          title: "不适合场景",
+          mastheadLeft: "19 · 先别上 AI",
+          mastheadRight: "Stop Conditions",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">19 · 先别上 AI</p>
+              <h2 class="reveal delay-1" data-editable>不是所有问题都适合马上用 AI 解决。</h2>
+              <div class="grid-3">
+                <article class="card reveal delay-2">
+                  <span class="num">01</span>
+                  <h3 data-editable>流程本身混乱</h3>
+                  <p data-editable>非标情况多、规则经常变、分公司差异大。先优化流程，再谈 AI。</p>
+                </article>
+                <article class="card reveal delay-3">
+                  <span class="num">02</span>
+                  <h3 data-editable>数据质量太差</h3>
+                  <p data-editable>关键信息散落在微信、邮件、个人电脑。至少先做集中存储和基础治理。</p>
+                </article>
+                <article class="card reveal delay-4">
+                  <span class="num">03</span>
+                  <h3 data-editable>高风险决策</h3>
+                  <p data-editable>涉及合规、财务、人事、重大客户承诺。AI 做辅助，最终由人决策。</p>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "避坑指南",
+          mastheadLeft: "20 · 四个坑",
+          mastheadRight: "Implementation Risks",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">20 · 四个坑</p>
+              <h2 class="reveal delay-1" data-editable>AI 落地最容易死在这些地方。</h2>
+              <div class="pitfall-list">
+                <article class="card reveal delay-2">
+                  <span class="tag">坑一</span>
+                  <h3 data-editable>让员工学太多工具</h3>
+                  <p data-editable>统一入口，只教 1-2 个核心工具，提供模板和提示词库。</p>
+                </article>
+                <article class="card reveal delay-2">
+                  <span class="tag">坑二</span>
+                  <h3 data-editable>忽视数据安全与合规</h3>
+                  <p data-editable>统一 API 调用、脱敏、审计，制定企业 AI 使用安全规范。</p>
+                </article>
+                <article class="card reveal delay-3">
+                  <span class="tag">坑三</span>
+                  <h3 data-editable>员工抵触或工具闲置</h3>
+                  <p data-editable>强调辅助而非替代，给试点员工正向激励，把提效纳入创新加分。</p>
+                </article>
+                <article class="card accent reveal delay-4">
+                  <span class="tag">坑四</span>
+                  <h3 data-editable>没有内部负责人</h3>
+                  <p data-editable>外部课程讲完就走，企业必须培养 1 名内部 AI 推进者。</p>
+                </article>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "正面案例：薪酬提效",
+          mastheadLeft: "21 · 真实案例",
+          mastheadRight: "Payroll Efficiency",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">21 · 真实案例 · 正面</p>
+              <h2 class="reveal delay-1" data-editable>薪酬核算：把"流程重构"交给业务，把"执行"交给 AI。</h2>
+              <div class="case-board reveal delay-2">
+                <article class="panel">
+                  <span class="tag">挑战</span>
+                  <h3 data-editable>子公司、阿米巴、人力流动大、考勤复杂 — 薪酬核算极度繁琐</h3>
+                  <ul data-editable>
+                    <li>多个子公司独立核算，规则各有不同</li>
+                    <li>阿米巴单元变动频繁，人力归属交叉</li>
+                    <li>人力流动大，入离职时间交错重叠</li>
+                    <li>考勤规则复杂，跨部门差异明显</li>
+                  </ul>
+                </article>
+                <article class="panel accent">
+                  <span class="tag">解法</span>
+                  <h3 data-editable>抽离核心业务流程 → 规范化 → 具体化 → 流程化</h3>
+                  <ul data-editable>
+                    <li>先把业务规则梳理为<strong>标准化流程</strong></li>
+                    <li>再把具体化的<strong>执行步骤</strong>交给 AI 完成</li>
+                    <li>AI 按规则自动核算、校验、生成</li>
+                    <li>交付给我们的：就是<strong>具体的薪酬文件</strong></li>
+                  </ul>
+                </article>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>关键：先梳理清楚业务规则，再让 AI 执行。规则越清晰，AI 越可靠。</div>
+            </div>
+          `
+        },
+        {
+          title: "反面案例：什么不该让AI做",
+          mastheadLeft: "22 · 真实案例",
+          mastheadRight: "When To Hold Back",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">22 · 真实案例 · 反面</p>
+              <h2 class="reveal delay-1" data-editable>不是所有问题都值得用 AI 解决，先问值不值得。</h2>
+              <div class="grid-3 reveal delay-2">
+                <article class="card accent">
+                  <span class="num">考勤</span>
+                  <h3 data-editable>流程复杂、频繁变动</h3>
+                  <p data-editable>排班规则、加班政策、调休流程经常因业务调整变化，AI 还没学会，规则又改了。</p>
+                  <b data-editable>先问：值不值得先把流程固定下来？</b>
+                </article>
+                <article class="card">
+                  <span class="num">例外</span>
+                  <h3 data-editable>非标准化决策</h3>
+                  <p data-editable>涉及人的主观判断、特殊审批、边界模糊的场景，AI 难以替代人的经验和判断力。</p>
+                  <b data-editable>先问：这个决策有没有清晰的判断标准？</b>
+                </article>
+                <article class="card">
+                  <span class="num">成本</span>
+                  <h3 data-editable>投入产出不清晰</h3>
+                  <p data-editable>如果流程重构本身的成本 > 人工成本，或者业务不确定性太高，应该暂时搁置。</p>
+                  <b data-editable>原则：酌情考虑，不盲目上 AI。</b>
+                </article>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>先判断"值不值得改变流程、符不符合公司实际情况"，再决定要不要上 AI。</div>
+            </div>
+          `
+        },
+        {
+          title: "一张纸工作坊",
+          mastheadLeft: "23 · 现场诊断",
+          mastheadRight: "One-Page Workshop",
+          body: String.raw`
+            <div class="content">
+              <p class="eyebrow reveal">23 · 现场诊断</p>
+              <h2 class="reveal delay-1" data-editable>一张纸，找出你的第一个 AI 场景。</h2>
+              <div class="worksheet reveal delay-2">
+                <label data-editable>我的业务里，最耗时的 3 个重复性工作是：</label>
+                <div class="blank-line"></div>
+                <label data-editable>其中，数据最规范、最容易标准化的是：</label>
+                <div class="blank-line"></div>
+                <label data-editable>如果这个环节效率翻倍，价值有多大？</label>
+                <div class="score-row">
+                  <span>1</span><i></i><span>3</span><i></i><span>5</span><i></i><span>7</span><i></i><span>10</span>
+                </div>
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>现场选 2-3 位老板，一起判断：是否适合试点、规则是否清晰、风险和成本边界在哪。</div>
+            </div>
+          `
+        },
+        {
+          title: "成熟度自查",
+          mastheadLeft: "24 · 企业 AI 成熟度",
+          mastheadRight: "Readiness Check",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">24 · 企业 AI 成熟度</p>
+              <h2 class="reveal delay-1" data-editable>先知道自己在哪个阶段，再决定下一步。</h2>
+              <div class="table-card reveal delay-2">
+                <div class="maturity-row head"><span>维度</span><span>0 分</span><span>1 分</span><span>2 分</span></div>
+                <div class="maturity-row"><span>流程</span><span>靠人记</span><span>有部分 SOP</span><span>流程清晰可复用</span></div>
+                <div class="maturity-row"><span>数据</span><span>散落各处</span><span>部分集中</span><span>结构化且可授权</span></div>
+                <div class="maturity-row"><span>工具</span><span>个人尝鲜</span><span>部门试点</span><span>统一入口与账号</span></div>
+                <div class="maturity-row"><span>组织</span><span>没人负责</span><span>兼职推进</span><span>明确负责人和机制</span></div>
+                <div class="maturity-row"><span>ROI</span><span>无法衡量</span><span>粗略估算</span><span>按月复盘收益</span></div>
+              </div>
+              <div class="score-guide reveal delay-3">
+                <span>0-3：先治理</span>
+                <span>4-7：先试点</span>
+                <span>8-10：可复制扩展</span>
+              </div>
+            </div>
+          `
+        },
+        {
+          title: "总结",
+          className: "statement-slide",
+          mastheadLeft: "25 · 总结",
+          mastheadRight: "Three Owner Moves",
+          body: String.raw`
+            <div class="content wide-content">
+              <p class="eyebrow reveal">25 · 总结</p>
+              <h2 class="reveal delay-1" data-editable>老板只需做三件事。</h2>
+              <div class="summary-ring reveal delay-2">
+                <article><strong data-editable>选切入点</strong><span data-editable>高频、标准化、低风险、可衡量</span></article>
+                <article><strong data-editable>搭基础设施</strong><span data-editable>统一 API、入口、负责人</span></article>
+                <article><strong data-editable>建提效文化</strong><span data-editable>看节省时间，给试点激励</span></article>
+              </div>
+              <div class="statement-text reveal delay-3" data-editable>AI 转型不是从买工具开始，而是从找到一个能算清账的重复流程开始。</div>
+            </div>
+          `
+        },
+        {
+          title: "收束",
+          className: "statement-slide",
+          mastheadLeft: "26 · Closing",
+          mastheadRight: "Final Sentence",
+          body: String.raw`
+            <div class="content">
+              <p class="eyebrow reveal">26 · Closing</p>
+              <h2 class="reveal delay-1" data-editable>最后，把 AI 转型说成一句话。</h2>
+              <div class="statement-text reveal delay-2" data-editable>
+                不是让每个员工都变成 AI 专家，而是让每个重复流程，都有机会被重新设计一遍。
+              </div>
+              <div class="bottom-line reveal delay-3" data-editable>先跑通一个场景，再复制一套方法。</div>
+            </div>
+          `
+        }
+      ];
+
+      function renderSlide(slide, index) {
+        const isCover = index === 0;
+        const total = String(slides.length).padStart(2, "0");
+        const page = String(index + 1).padStart(2, "0");
+        const className = ["slide", slide.className || "", isCover ? "active visible" : ""].join(" ").trim();
+        const footer = isCover
+          ? ""
+          : `<div class="footer"><span>Enterprise AI Playbook 2.0</span><span class="page">${page} / ${total}</span></div>`;
+        return `
+          <section class="${className}" data-title="${slide.title}">
+            <div class="masthead reveal">
+              <span class="mark">${slide.mastheadLeft}</span>
+              <span>${slide.mastheadRight}</span>
+            </div>
+            ${slide.body}
+            ${footer}
+          </section>
+        `;
+      }
+
+      document.getElementById("deckStage").innerHTML = slides.map(renderSlide).join("");
+
+      class SlidePresentation {
+        constructor() {
+          this.stage = document.getElementById("deckStage");
+          this.slides = Array.from(document.querySelectorAll(".slide"));
+          this.counter = document.getElementById("slideCounter");
+          this.progress = document.getElementById("progressBar");
+          this.title = document.getElementById("slideTitle");
+          this.current = 0;
+          this.lastWheel = 0;
+          this.setupStageScale();
+          this.setupControls();
+          this.setupTouch();
+          this.setupWheel();
+          this.setupHash();
+          this.show(0, false);
+        }
+
+        setupStageScale() {
+          const fit = () => {
+            const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * scale) / 2;
+            const y = (window.innerHeight - 1080 * scale) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+          };
+          window.addEventListener("resize", fit);
+          fit();
+        }
+
+        setupControls() {
+          document.getElementById("prevBtn").addEventListener("click", () => this.prev());
+          document.getElementById("nextBtn").addEventListener("click", () => this.next());
+          document.getElementById("printBtn").addEventListener("click", () => window.print());
+          document.addEventListener("keydown", (event) => {
+            const editable = event.target && event.target.getAttribute("contenteditable") === "true";
+            if (editable) return;
+            if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+              event.preventDefault();
+              this.next();
+            }
+            if (["ArrowLeft", "PageUp"].includes(event.key)) {
+              event.preventDefault();
+              this.prev();
+            }
+            if (event.key === "Home") {
+              event.preventDefault();
+              this.show(0);
+            }
+            if (event.key === "End") {
+              event.preventDefault();
+              this.show(this.slides.length - 1);
+            }
+            if (event.key.toLowerCase() === "p") {
+              event.preventDefault();
+              window.print();
+            }
+          });
+        }
+
+        setupTouch() {
+          let startX = 0;
+          let startY = 0;
+          document.addEventListener("touchstart", (event) => {
+            const touch = event.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+          }, { passive: true });
+          document.addEventListener("touchend", (event) => {
+            const touch = event.changedTouches[0];
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+            if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+              dx < 0 ? this.next() : this.prev();
+            }
+          }, { passive: true });
+        }
+
+        setupWheel() {
+          document.addEventListener("wheel", (event) => {
+            const now = Date.now();
+            if (now - this.lastWheel < 520 || Math.abs(event.deltaY) < 28) return;
+            this.lastWheel = now;
+            event.deltaY > 0 ? this.next() : this.prev();
+          }, { passive: true });
+        }
+
+        setupHash() {
+          const fromHash = () => {
+            const match = window.location.hash.match(/slide-(\d+)/);
+            if (match) this.show(Number(match[1]) - 1, false);
+          };
+          window.addEventListener("hashchange", fromHash);
+          fromHash();
+        }
+
+        show(index, updateHash = true) {
+          this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+          this.slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === this.current);
+            slide.classList.toggle("visible", i === this.current);
+          });
+          const number = String(this.current + 1).padStart(2, "0");
+          const total = String(this.slides.length).padStart(2, "0");
+          this.counter.textContent = `${number} / ${total}`;
+          this.progress.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+          this.title.textContent = this.slides[this.current].dataset.title || "";
+          if (updateHash) history.replaceState(null, "", `#slide-${this.current + 1}`);
+        }
+
+        next() {
+          this.show(this.current + 1);
+        }
+
+        prev() {
+          this.show(this.current - 1);
+        }
+      }
+
+      class InlineEditor {
+        constructor() {
+          this.isActive = false;
+          this.key = "ai-transformation-deck-v2-edits";
+          this.toggle = document.getElementById("editToggle");
+          this.exportButton = document.getElementById("exportButton");
+          this.hotzone = document.querySelector(".edit-hotzone");
+          this.toast = document.getElementById("toast");
+          this.editables = Array.from(document.querySelectorAll("[data-editable]"));
+          this.hideTimer = null;
+          this.load();
+          this.bind();
+        }
+
+        bind() {
+          this.toggle.addEventListener("click", () => this.toggleMode());
+          this.exportButton.addEventListener("click", () => this.download());
+          this.hotzone.addEventListener("click", () => this.toggleMode());
+          [this.hotzone, this.toggle, this.exportButton].forEach((el) => {
+            el.addEventListener("mouseenter", () => this.showButtons());
+            el.addEventListener("mouseleave", () => this.scheduleHide());
+          });
+          document.addEventListener("keydown", (event) => {
+            const editable = event.target && event.target.getAttribute("contenteditable") === "true";
+            if ((event.key === "e" || event.key === "E") && !editable) {
+              event.preventDefault();
+              this.toggleMode();
+            }
+          });
+          this.editables.forEach((el, index) => {
+            el.dataset.editId = `editable-${index}`;
+            el.addEventListener("input", () => this.save());
+          });
+        }
+
+        showButtons() {
+          clearTimeout(this.hideTimer);
+          this.toggle.classList.add("show");
+          this.exportButton.classList.add("show");
+        }
+
+        scheduleHide() {
+          clearTimeout(this.hideTimer);
+          this.hideTimer = setTimeout(() => {
+            if (!this.isActive) {
+              this.toggle.classList.remove("show");
+              this.exportButton.classList.remove("show");
+            }
+          }, 400);
+        }
+
+        toggleMode() {
+          this.isActive = !this.isActive;
+          document.body.classList.toggle("editing", this.isActive);
+          this.toggle.classList.toggle("active", this.isActive);
+          this.exportButton.classList.toggle("active", this.isActive);
+          this.editables.forEach((el) => {
+            el.setAttribute("contenteditable", this.isActive ? "true" : "false");
+          });
+          this.showToast(this.isActive ? "编辑模式已开启，点文字即可修改。" : "编辑模式已关闭，修改已自动保存。");
+        }
+
+        save() {
+          const data = {};
+          this.editables.forEach((el) => {
+            data[el.dataset.editId] = el.innerHTML;
+          });
+          localStorage.setItem(this.key, JSON.stringify(data));
+        }
+
+        load() {
+          try {
+            const data = JSON.parse(localStorage.getItem(this.key) || "{}");
+            this.editables.forEach((el, index) => {
+              const value = data[`editable-${index}`];
+              if (value) el.innerHTML = value;
+            });
+          } catch {
+            localStorage.removeItem(this.key);
+          }
+        }
+
+        download() {
+          this.save();
+          const blob = new Blob([document.documentElement.outerHTML], { type: "text/html;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "AI转型闭门分享PPT-精简版.html";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+          this.showToast("已导出当前 HTML。");
+        }
+
+        showToast(text) {
+          this.toast.textContent = text;
+          this.toast.classList.add("show");
+          clearTimeout(this.toastTimer);
+          this.toastTimer = setTimeout(() => this.toast.classList.remove("show"), 2200);
+        }
+      }
+
+      window.deck = new SlidePresentation();
+      window.editor = new InlineEditor();
+    </script>
+  </body>
+</html>
