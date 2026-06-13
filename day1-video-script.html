@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 · 视频完整脚本 — AI 工具越多，企业主越焦虑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   CSS CUSTOM PROPERTIES (THEME)
+   Warm editorial — paper-meets-screen
+   =========================================== */
+:root {
+  --stage-bg: #2c2416;
+  --slide-bg: #f9f4eb;
+  --paper: #f5efe4;
+  --paper-2: #ede5d8;
+  --ink: #1a1714;
+  --ink-2: #3d3530;
+  --ink-3: #716760;
+  --amber: #b8863a;
+  --amber-light: #dfb87a;
+  --amber-bg: rgba(184, 134, 58, 0.09);
+  --line: rgba(26, 23, 20, 0.10);
+  --line-strong: rgba(184, 134, 58, 0.35);
+  --accent-red: #b34a3a;
+  --accent-green: #4a7b5c;
+  --font-display: 'Noto Serif SC', serif;
+  --font-body: 'DM Sans', 'Noto Serif SC', sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal: 0.6s;
+}
+
+/* ===========================================
+   viewport-base.css — MANDATORY FIXED STAGE
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg); }
+.deck-stage {
+  position: absolute; left: 0; top: 0;
+  width: 1920px; height: 1080px;
+  overflow: hidden; transform-origin: 0 0;
+  background: var(--slide-bg);
+}
+.slide {
+  position: absolute; inset: 0; width: 1920px; height: 1080px;
+  overflow: hidden; display: block; visibility: hidden;
+  opacity: 0; pointer-events: none;
+  background: var(--slide-bg);
+}
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+
+@media print {
+  html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+  .deck-viewport { position: static; overflow: visible; background: #fff; }
+  .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+  .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+  .slide:last-child { break-after: auto; }
+  .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } }
+
+/* ===========================================
+   ANIMATIONS — staggered reveal
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible .delay-1 { transition-delay: 0.08s; }
+.slide.visible .delay-2 { transition-delay: 0.16s; }
+.slide.visible .delay-3 { transition-delay: 0.24s; }
+.slide.visible .delay-4 { transition-delay: 0.32s; }
+.slide.visible .delay-5 { transition-delay: 0.40s; }
+
+/* ===========================================
+   LAYOUT — reusable components
+   =========================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.cover-slide { background: var(--slide-bg); }
+.cover-slide::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, rgba(184, 134, 58, 0.10), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(26, 23, 20, 0.04), transparent);
+  pointer-events: none;
+}
+
+.time-block {
+  position: absolute; top: 96px; left: 118px;
+  font-family: 'DM Sans', monospace; font-size: 18px; font-weight: 800;
+  color: var(--amber); letter-spacing: 0.04em;
+}
+.time-block span { background: var(--amber-bg); padding: 6px 14px; border-radius: 4px; }
+
+.slide-title {
+  position: absolute; left: 118px; top: 146px;
+  font-family: var(--font-display); font-size: 48px; font-weight: 900;
+  color: var(--ink); line-height: 1.18;
+  max-width: 1400px;
+}
+
+.slide-sub {
+  position: absolute; left: 118px; top: 224px;
+  font-family: var(--font-body); font-size: 22px; color: var(--ink-3);
+  max-width: 900px;
+}
+
+.content-area {
+  position: absolute; left: 118px; top: 280px; right: 118px; bottom: 130px;
+  display: flex; gap: 40px;
+}
+
+.col-visual {
+  flex: 0 0 600px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+  padding: 36px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.col-narration {
+  flex: 1;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+  padding: 36px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+
+.section-label {
+  font-family: 'DM Sans', monospace; font-size: 13px; font-weight: 700;
+  color: var(--amber); letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.vis-line {
+  font-family: var(--font-body); font-size: 20px; line-height: 1.55; color: var(--ink-2);
+}
+
+.narration-text {
+  font-family: var(--font-display); font-size: 27px; line-height: 1.45; color: var(--ink);
+  font-weight: 500;
+}
+.narration-text em {
+  color: var(--amber); font-style: normal; font-weight: 700;
+}
+
+.note-text {
+  font-family: var(--font-body); font-size: 17px; line-height: 1.5; color: var(--ink-3);
+}
+
+.tag-hl {
+  display: inline-block; font-family: 'DM Sans', monospace; font-size: 12px;
+  background: var(--amber-bg); color: var(--amber); font-weight: 700;
+  padding: 3px 10px; border-radius: 3px;
+}
+
+/* ── Timeline overview slide ── */
+.timeline-grid {
+  position: absolute; left: 118px; top: 220px; right: 118px; bottom: 120px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  align-content: start;
+}
+.timeline-card {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+  padding: 20px;
+}
+.timeline-card .seg-label {
+  font-family: 'DM Sans', monospace; font-size: 15px; font-weight: 800; color: var(--amber);
+  margin-bottom: 8px;
+}
+.timeline-card .seg-time {
+  display: inline-block; font-family: 'DM Sans', monospace; font-size: 11px;
+  background: var(--amber-bg); color: var(--amber); padding: 2px 8px; border-radius: 3px;
+  margin-bottom: 10px;
+}
+.timeline-card .seg-text {
+  font-family: var(--font-display); font-size: 18px; line-height: 1.4; color: var(--ink-2);
+  font-weight: 500;
+}
+
+/* ── Materials / Tips slides ── */
+.materials-grid {
+  position: absolute; left: 118px; top: 220px; right: 118px; bottom: 120px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+}
+.material-card {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 32px;
+}
+.material-card h3 {
+  font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--ink);
+  margin-bottom: 8px;
+}
+.material-card .cat {
+  font-family: 'DM Sans', monospace; font-size: 13px; color: var(--amber); font-weight: 700;
+  margin-bottom: 18px;
+}
+.material-card li {
+  font-family: var(--font-body); font-size: 22px; line-height: 1.5; color: var(--ink-2);
+  margin: 10px 0; list-style: none; padding-left: 0;
+}
+.material-card li::before { content: '· '; color: var(--amber); font-weight: 700; }
+
+/* ── Progress / counter ── */
+.progress-shell {
+  position: fixed; left: 28px; right: 28px; bottom: 52px; z-index: 900;
+  display: grid; grid-template-columns: 120px 1fr 240px; gap: 18px; align-items: center;
+  color: rgba(249, 244, 235, 0.7); font-family: 'DM Sans', monospace; font-size: 13px;
+  pointer-events: none;
+}
+.progress-track { height: 3px; overflow: hidden; background: rgba(249, 244, 235, 0.15); }
+.progress-bar { width: 0; height: 100%; background: linear-gradient(90deg, var(--amber-light), #f5efe4); transition: width 0.28s ease; }
+
+/* ── Controls ── */
+.deck-controls {
+  display: flex; gap: 6px; padding: 6px;
+  border: 1px solid rgba(249, 244, 235, 0.18);
+  background: rgba(44, 36, 22, 0.8); border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+.deck-controls button {
+  display: grid; width: 36px; height: 36px; place-items: center;
+  border: 1px solid rgba(249, 244, 235, 0.13);
+  background: rgba(255, 255, 255, 0.05); border-radius: 4px;
+  color: rgba(249, 244, 235, 0.8); cursor: pointer;
+  font: 700 16px/1 'DM Sans', monospace;
+}
+.deck-controls button:hover { border-color: var(--amber); color: var(--amber-light); }
+
+/* ── Cover specific ── */
+.cover-title {
+  position: absolute; left: 118px; top: 246px;
+}
+.cover-title .series { font-family: 'DM Sans', monospace; font-size: 20px; color: var(--amber); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 20px; }
+.cover-title h1 { font-family: var(--font-display); font-size: 88px; font-weight: 900; color: var(--ink); line-height: 1.08; }
+.cover-title h1 em { color: var(--amber); font-style: normal; }
+.cover-title .sub { font-family: var(--font-body); font-size: 32px; color: var(--ink-3); margin-top: 24px; line-height: 1.45; max-width: 1000px; }
+.cover-meta {
+  position: absolute; left: 118px; bottom: 120px;
+  display: flex; align-items: center; gap: 28px;
+}
+.cover-meta .line { width: 80px; height: 2px; background: var(--amber); }
+.cover-meta div { font-family: var(--font-body); }
+.cover-meta strong { display: block; font-size: 26px; color: var(--ink); }
+.cover-meta span { font-size: 17px; color: var(--ink-3); }
+
+.cover-badge {
+  position: absolute; right: 118px; bottom: 120px;
+  border: 1px solid var(--line-strong); padding: 10px 20px;
+  font-family: 'DM Sans', monospace; font-size: 14px; color: var(--amber);
+  border-radius: 6px;
+}
+
+/* ── Stage numbers on screen slides ── */
+.screen-note {
+  position: absolute; right: 118px; bottom: 120px;
+  font-family: 'DM Sans', monospace; font-size: 14px; color: var(--ink-3);
+  border: 1px solid var(--line); padding: 8px 16px; border-radius: 6px;
+}
+
+/* ── Timeline connector ── */
+.timeline-connector {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.timeline-connector .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
+.timeline-connector .bar { height: 2px; flex: 1; background: var(--line-strong); }
+.timeline-connector .total { font-family: 'DM Sans', monospace; font-size: 14px; color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+<div class="deck-viewport">
+  <main class="deck-stage" id="deckStage"></main>
+</div>
+
+<div class="progress-shell" aria-hidden="true">
+  <span id="slideCounter">01 / 14</span>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+  <span id="slideTitle">封面</span>
+</div>
+
+<div class="deck-controls" aria-label="翻页控制">
+  <button type="button" id="prevBtn" title="上一页">‹</button>
+  <button type="button" id="nextBtn" title="下一页">›</button>
+  <button type="button" id="printBtn" title="打印 / 导出 PDF">P</button>
+</div>
+
+<script>
+const slides = [
+  // ── Slide 0: Cover ──
+  {
+    title: '封面 · 视频脚本总览',
+    body: `
+      <div class="cover-slide">
+        <div class="cover-title reveal delay-1">
+          <p class="series">Day 1 视频完整脚本</p>
+          <h1>AI 工具越多，<br><em>企业主越焦虑</em></h1>
+          <p class="sub">问题根本不在工具。<br>从"学工具"回到"找问题"——先画一张流程的图。</p>
+        </div>
+        <div class="cover-meta reveal delay-3">
+          <div class="line"></div>
+          <div>
+            <strong>认知向导 · 肖洒</strong>
+            <span>105 秒 | 观点类 | 金融+法律 AI 落地</span>
+          </div>
+        </div>
+        <div class="cover-badge reveal delay-4">HOOK · STORY · INSIGHT</div>
+      </div>
+    `
+  },
+
+  // ── Slide 1: Timeline Overview ──
+  {
+    title: '全片时间线',
+    body: `
+      <div class="time-block reveal"><span>OVERVIEW · 全片总览</span></div>
+      <h2 class="slide-title reveal delay-1">105 秒 · 8 个时间段落</h2>
+      <div class="timeline-grid reveal delay-2">
+        <div class="timeline-card">
+          <div class="seg-label">01</div>
+          <div class="seg-time">0-5s</div>
+          <div class="seg-text">开场炸观点：AI 工具越多，你越焦虑</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">02</div>
+          <div class="seg-time">5-15s</div>
+          <div class="seg-text">引子：外贸老板的故事，7 个工具</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">03</div>
+          <div class="seg-time">15-30s</div>
+          <div class="seg-text">破题：核心问题不是工具，是"解决什么问题"</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">04</div>
+          <div class="seg-time">30-50s</div>
+          <div class="seg-text">具体化：省下的时间用在哪了？</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">05</div>
+          <div class="seg-time">50-75s</div>
+          <div class="seg-text">方法论：先画流程，再放 AI</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">06</div>
+          <div class="seg-time">75-95s</div>
+          <div class="seg-text">回扣：不是学得慢，是学反了</div>
+        </div>
+        <div class="timeline-card">
+          <div class="seg-label">07</div>
+          <div class="seg-time">95-105s</div>
+          <div class="seg-text">钩子：关注 + 下期预告</div>
+        </div>
+        <div class="timeline-card" style="background:var(--amber-bg);border-color:var(--line-strong);">
+          <div class="seg-label" style="color:var(--ink);">片尾</div>
+          <div class="seg-time">拍摄提示</div>
+          <div class="seg-text">不要念稿 · 停顿比语速重要 · 前 5 秒眼神怼镜头</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 2: 0-5s ──
+  {
+    title: '0-5s · 开场',
+    body: `
+      <div class="time-block reveal"><span>01 · 0-5s · 开场炸观点</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">真人出镜，直面镜头。<br><br>背景干净（书桌/书架/空白墙），灯光暖色。<br><br>语调冷静、笃定——不是亢奋不是说教。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">🎥 5 秒定生死</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"AI 工具越多，你越焦虑。<br><em>但问题根本不在工具</em>。"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">不需要铺垫，不需要"大家好我是××"。<br><strong>直接炸观点。</strong></div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 3: 5-15s ──
+  {
+    title: '5-15s · 引子',
+    body: `
+      <div class="time-block reveal"><span>02 · 5-15s · 引子 · 真实故事</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">保持镜头，自然手势辅助。<br><br>语速正常偏慢，每句话之间有停顿。<br><br>面部表情平静，眼神直视镜头。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">🎯 目标用户画像</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"上周一个做外贸的老板跟我说，他已经装了 7 个 AI 工具了——<br><br>Cursor 写代码、Gamma 做 PPT、Midjourney 出图、DeepSeek 写文案。<br><br>他说：我每天花 2 小时学 AI，但我的生意没什么变化。<br><br>然后他问我：<em>是不是我学得太慢了</em>？"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">用真实场景引发共鸣。这个外贸老板就是你的目标用户。</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 4: 15-30s ──
+  {
+    title: '15-30s · 破题',
+    body: `
+      <div class="time-block reveal"><span>03 · 15-30s · 破题 · 核心观点出现</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">镜头不变。语调稍微加重，但依旧冷静。<br><br>眼神保持锁住镜头。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">⚡ 第一次核心观点输出</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"我说不是。你学得不慢。<br><br>你学 AI 的速度比我见过 90% 的老板都快。<br><br>你的问题是——<br><br><em>你学了这么多工具，但你从来没回答过一个更根本的问题：<br>AI 到底要替你解决什么问题</em>？"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">从"焦虑的表象"转到"焦虑的根源"。<br><strong>这句话说完，至少停顿 1.5 秒。</strong></div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 5: 30-50s ──
+  {
+    title: '30-50s · 具体化',
+    body: `
+      <div class="time-block reveal"><span>04 · 30-50s · 具体化 · 用数字制造冲击</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">切换画面或使用辅助画面。<br><br>→ 真人拿纸笔示意"画流程"<br>→ 或用简单的字幕动画<br><br>核心是让人"看见"那个对比。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">📊 视觉辅助段落</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"你看，你用 AI 写周报——周报省了 30 分钟。<br>你用 AI 做 PPT——PPT 省了 1 小时。<br>你用 AI 写开发信——开发信省了 20 分钟。<br><br>这三个加起来，一天省了 2 小时。<br><br>但问题是——<br><br><em>你省下来的这 2 小时，用在提升利润的事情上了吗？<br>还是又用来学另一个 AI 工具了</em>？"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">用具体时间数字制造冲击。每个人都能听懂。</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 6: 50-75s ──
+  {
+    title: '50-75s · 方法论',
+    body: `
+      <div class="time-block reveal"><span>05 · 50-75s · 方法论 · 行业背书</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">回到真人出镜，镜头稍微近一点。<br><br>语调从冷静转为笃定。<br><br>讲到"画流程"时用手在空中比划。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">🏦 行业背书 + 核心方法论</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"我在金融机构做 AI 落地的时候，<br>最重要的第一课不是'选什么工具'，<br>是<em>'先画一张图'</em>——<br><br>把你的业务流程画出来，<br>找到那个<em>消耗了最多重复性脑力的环节</em>。<br><br>那个环节，才是 AI 应该去的地方。<br><br>比如一个信贷审批员，每天 70% 的时间花在看申请材料、核对数据、写初审意见——这些全是 AI 能干的事。<br><br>但如果你不先画流程，你根本不会想到把 AI 放在这里。<br><em>你只会让他帮你写周报。</em>"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">三步一步不能少：行业背书 → 方法论核心（画流程）→ 具体例子证明。</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 7: 75-95s ──
+  {
+    title: '75-95s · 回扣',
+    body: `
+      <div class="time-block reveal"><span>06 · 75-95s · 回扣 · 形成闭环</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">保持镜头，语气略缓，留白。<br><br>每句之间有自然停顿。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">🔁 回到开头故事 · 形成闭环</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"所以回到那个外贸老板的问题：<br><br>他不是学得太慢，<em>他是学反了</em>。<br><br>不是先学工具再找问题，<br>是<em>先找到问题、再找对的工具</em>。<br><br>工具是最后一环，<em>不是第一环</em>。"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">回到最开始的故事。观众此刻会感觉"整个逻辑串起来了"。</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 8: 95-105s ──
+  {
+    title: '95-105s · 钩子',
+    body: `
+      <div class="time-block reveal"><span>07 · 95-105s · 钩子 · 下期预告</span></div>
+      <div class="content-area reveal delay-1">
+        <div class="col-visual">
+          <div class="section-label">画面 / 视觉</div>
+          <div class="vis-line">镜头不动，语气自然，像是随口一说。<br><br>不要刻意推销，不要喊关注。</div>
+          <div style="margin-top:auto;"><span class="tag-hl">📌 关注理由 + 下期预告</span></div>
+        </div>
+        <div class="col-narration">
+          <div class="section-label">文案 · 口播</div>
+          <div class="narration-text reveal delay-2">"如果你想搞清楚自己的企业应该从哪个环节开始做 AI——<br><br>关注我。接下来的视频，我用金融行业、法律行业的真实案例，一步步帮你找答案。<br><br>下期我会讲：为什么我见过最聪明的老板，<em>现在反而不急着用 AI</em>。"</div>
+          <div class="section-label" style="margin-top:16px;">备注</div>
+          <div class="note-text reveal delay-3">只说人话。不说"点赞收藏转发"。</div>
+        </div>
+      </div>
+    `
+  },
+
+  // ── Slide 9: 所需材料清单 ──
+  {
+    title: '所需材料清单',
+    body: `
+      <div class="time-block reveal"><span>PRODUCTION · 所需材料清单</span></div>
+      <h2 class="slide-title reveal delay-1">拍摄前，准备好这些</h2>
+      <div class="materials-grid reveal delay-2">
+        <div class="material-card">
+          <div class="cat">类别 · 拍摄</div>
+          <h3>硬件设备</h3>
+          <li>手机或相机（画质 1080p 以上）</li>
+          <li>三脚架（固定机位，避免晃动）</li>
+          <li>补光灯（暖色温，模拟书桌灯光）</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">类别 · 场景</div>
+          <h3>背景布置</h3>
+          <li>书桌最佳 → 书架次之 → 白墙最简</li>
+          <li>视觉简洁，不抢信息</li>
+          <li>暖色调灯光，营造"认知向导"氛围</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">类别 · 辅助画面</div>
+          <h3>30-50s 段落专用</h3>
+          <li>纸 + 笔（拍"画流程"的手部动作）</li>
+          <li>或后期制作字幕动画</li>
+          <li>让观众"看见"时间数字的对比</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">类别 · 服装 · 后期</div>
+          <h3>形象 & 制作</h3>
+          <li>有领但不正式（Polo / 衬衫外套，不打领带）</li>
+          <li>字幕必备（重点句子放大或变色）</li>
+          <li>AI 辅助内容打标（避免限流）</li>
+        </div>
+      </div>
+      <div class="screen-note reveal delay-3">4 大类别 · 全部到位</div>
+    `
+  },
+
+  // ── Slide 10: 拍摄提示 ──
+  {
+    title: '拍摄提示',
+    body: `
+      <div class="time-block reveal"><span>PRODUCTION · 拍摄提示 · 关键原则</span></div>
+      <h2 class="slide-title reveal delay-1">不要念稿 · 停顿比语速重要</h2>
+      <div class="materials-grid reveal delay-2" style="top:240px;">
+        <div class="material-card" style="border-color:var(--line-strong);background:var(--amber-bg);">
+          <div class="cat">原则 01</div>
+          <h3>不要念稿！</h3>
+          <li style="font-size:24px;line-height:1.5;">对着镜头说话，不是对着镜头朗读。</li>
+          <li style="font-size:24px;line-height:1.5;">先背 3 遍关键句子，然后自由发挥。</li>
+          <li style="font-size:24px;line-height:1.5;">语气不完美比完美念稿好 100 倍。</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">原则 02</div>
+          <h3>停顿比语速重要</h3>
+          <li style="font-size:24px;line-height:1.5;">关键句子说完，至少停 1.5 秒再继续。</li>
+          <li style="font-size:24px;line-height:1.5;">留白是信任感的来源。</li>
+          <li style="font-size:24px;line-height:1.5;">尤其 <em>"AI 到底要替你解决什么问题"</em> 这句话后。</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">原则 03</div>
+          <h3>手势自然</h3>
+          <li style="font-size:24px;line-height:1.5;">讲到"画流程"时用手在空中比划。</li>
+          <li style="font-size:24px;line-height:1.5;">真实感胜于精心设计。</li>
+          <li style="font-size:24px;line-height:1.5;">不要刻意摆动作。</li>
+        </div>
+        <div class="material-card" style="border-color:var(--line-strong);background:var(--amber-bg);">
+          <div class="cat">原则 04 · 最重要</div>
+          <h3>前 5 秒的眼神</h3>
+          <li style="font-size:24px;line-height:1.5; font-weight:800;">前 5 秒眼神必须死盯镜头。</li>
+          <li style="font-size:24px;line-height:1.5;">不要左右看、不要低头看稿。</li>
+          <li style="font-size:24px;line-height:1.5;">这是 5 秒定生死的时刻。</li>
+        </div>
+      </div>
+      <div class="screen-note reveal delay-3">四条原则 · 拍摄前再过一遍</div>
+    `
+  },
+
+  // ── Slide 11: 剪辑要点 ──
+  {
+    title: '后期剪辑要点',
+    body: `
+      <div class="time-block reveal"><span>POST-PRODUCTION · 后期剪辑建议</span></div>
+      <h2 class="slide-title reveal delay-1">字幕 · 节奏 · 辅助画面</h2>
+      <div class="materials-grid reveal delay-2" style="top:240px;">
+        <div class="material-card" style="border-color:var(--line-strong);background:var(--amber-bg);">
+          <div class="cat">要点 01</div>
+          <h3>字幕设计</h3>
+          <li>全程字幕是标配</li>
+          <li>重点句子 —— <strong>"放大字号 + 变色（琥珀色）"</strong></li>
+          <li>例如："AI 到底要替你解决什么问题"</li>
+          <li>"不是先学工具再找问题"</li>
+          <li>"先找到问题、再找对的工具"</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">要点 02</div>
+          <h3>节奏把控</h3>
+          <li>0-5s：快速直给，不废话</li>
+          <li>5-30s：叙述故事，节奏稍缓</li>
+          <li>30-50s：加快节奏，辅以视觉变化</li>
+          <li>50-75s：最核心段落，放慢节奏</li>
+          <li>75-95s：收束，语气放缓</li>
+          <li>95-105s：自然收尾，不拖沓</li>
+        </div>
+        <div class="material-card">
+          <div class="cat">要点 03</div>
+          <h3>辅助画面时机</h3>
+          <li><strong>30-50s 段</strong>：纸笔画流程 / 字幕动画</li>
+          <li>其他段落：保持真人出镜</li>
+          <li>不要频繁切换画面 —— 降低信任感</li>
+        </div>
+        <div class="material-card" style="border-color:var(--line-strong);background:var(--amber-bg);">
+          <div class="cat">要点 04</div>
+          <h3>音效 & 背景音乐</h3>
+          <li>暖色调、低频、不抢话的环境音乐</li>
+          <li>关键金句处可以略作停顿突出</li>
+          <li>避免激昂快节奏 —— 不是热血演讲</li>
+          <li>建议：轻柔的钢琴或极简电子</li>
+        </div>
+      </div>
+      <div class="screen-note reveal delay-3">字幕是抖音标配 · 不打标会被限流</div>
+    `
+  },
+
+  // ── Slide 12: 关键词高亮 ──
+  {
+    title: '关键词 · 镜头对照',
+    body: `
+      <div class="time-block reveal"><span>KEY FRAMES · 关键句 · 镜头对照</span></div>
+      <h2 class="slide-title reveal delay-1">一句话对应一个情绪</h2>
+      <div class="content-area reveal delay-2" style="flex-direction:column;gap:14px;top:240px;right:200px;left:118px;bottom:130px;">
+        <div style="display:grid;grid-template-columns:1.2fr 220px 1fr;gap:16px;font-size:20px;">
+          <div style="font-weight:800;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">关键句</div>
+          <div style="font-weight:700;color:var(--amber);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">镜头</div>
+          <div style="font-weight:500;color:var(--ink-3);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">情绪</div>
+
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">"AI 工具越多，你越焦虑。但问题根本不在工具。"</div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">锁镜头</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">冷静 · 笃定</div>
+
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">"是不是我学得太慢了？"</div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">锁镜头</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">共情</div>
+
+          <div style="background:var(--pigment);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;color:var(--ink);background:var(--amber-bg);"><em>AI 到底要替你解决什么问题？</em></div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;">锁镜头 · 近</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;">笃定 · 停顿1.5s</div>
+
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">"一天省了 2 小时——用在哪了？"</div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">辅助画面</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">冲击 · 反思</div>
+
+          <div style="background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;color:var(--ink);background:var(--amber-bg);"><em>先画一张图</em></div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;">近景 · 手势</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line-strong);border-radius:10px;padding:14px 18px;font-weight:700;">权威 · 可信</div>
+
+          <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">"不是学得太慢，是学反了"</div>
+          <div style="color:var(--amber);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">锁镜头</div>
+          <div style="color:var(--ink-3);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;">收束 · 通透</div>
+        </div>
+      </div>
+      <div class="screen-note reveal delay-3">拍摄时对着这张表，一句话一个镜头</div>
+    `
+  },
+
+  // ── Slide 13: End ──
+  {
+    title: '收束 · Ready to shoot',
+    body: `
+      <div class="cover-slide">
+        <div class="cover-title reveal delay-1" style="top:300px;">
+          <p class="series">Day 1 · Ready to Shoot</p>
+          <h1 style="font-size:80px;">准备好了</h1>
+          <div class="sub" style="margin-top:30px;">
+            <li style="font-size:26px;color:var(--ink-2);margin:10px 0;">背熟 3 个关键句子</li>
+            <li style="font-size:26px;color:var(--ink-2);margin:10px 0;">打开补光灯 · 架好三脚架</li>
+            <li style="font-size:26px;color:var(--ink-2);margin:10px 0;">前 5 秒盯死镜头</li>
+            <li style="font-size:26px;color:var(--ink-2);margin:10px 0;">停顿比语速重要</li>
+          </div>
+        </div>
+        <div class="cover-meta reveal delay-3" style="bottom:120px;">
+          <div class="line"></div>
+          <div>
+            <strong>下期预告</strong>
+            <span>为什么我见过最聪明的老板，现在反而不急着用 AI</span>
+          </div>
+        </div>
+      </div>
+    `
+  }
+];
+
+// ── Render ──
+function renderSlide(slide, index) {
+  const isCover = index === 0 || index === slides.length - 1;
+  const total = String(slides.length).padStart(2, '0');
+  const page = String(index + 1).padStart(2, '0');
+  const cls = ['slide', isCover ? 'active visible' : '', index === 0 || index === slides.length - 1 ? 'cover-slide' : ''].filter(Boolean).join(' ');
+  return `<section class="${cls}" data-title="${slide.title}">${slide.body}</section>`;
+}
+
+document.getElementById('deckStage').innerHTML = slides.map(renderSlide).join('');
+
+// ── Presentation Controller ──
+class Deck {
+  constructor() {
+    this.stage = document.getElementById('deckStage');
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.counter = document.getElementById('slideCounter');
+    this.progress = document.getElementById('progressBar');
+    this.title = document.getElementById('slideTitle');
+    this.current = 0;
+    this.lastWheel = 0;
+    this.fit();
+    this.bind();
+    this.show(0, false);
+    window.addEventListener('resize', () => this.fit());
+  }
+  fit() {
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    this.stage.style.transform = `translate(${(window.innerWidth - 1920*s)/2}px, ${(window.innerHeight - 1080*s)/2}px) scale(${s})`;
+  }
+  bind() {
+    document.getElementById('prevBtn').addEventListener('click', () => this.prev());
+    document.getElementById('nextBtn').addEventListener('click', () => this.next());
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+    document.addEventListener('keydown', e => {
+      const ed = e.target && e.target.getAttribute('contenteditable') === 'true';
+      if (ed) return;
+      if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); this.next(); }
+      if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+      if (e.key === 'Home') { e.preventDefault(); this.show(0); }
+      if (e.key === 'End') { e.preventDefault(); this.show(this.slides.length - 1); }
+      if (e.key.toLowerCase() === 'p') { e.preventDefault(); window.print(); }
+    });
+    document.addEventListener('wheel', e => {
+      const now = Date.now();
+      if (now - this.lastWheel < 520 || Math.abs(e.deltaY) < 28) return;
+      this.lastWheel = now; e.deltaY > 0 ? this.next() : this.prev();
+    }, { passive: true });
+    let sx = 0, sy = 0;
+    document.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) dx < 0 ? this.next() : this.prev();
+    }, { passive: true });
+  }
+  show(index, updateHash = true) {
+    this.current = Math.max(0, Math.min(index, this.slides.length - 1));
+    this.slides.forEach((s, i) => { s.classList.toggle('active', i === this.current); s.classList.toggle('visible', i === this.current); });
+    const num = String(this.current + 1).padStart(2, '0'), tot = String(this.slides.length).padStart(2, '0');
+    this.counter.textContent = `${num} / ${tot}`;
+    this.progress.style.width = `${((this.current + 1) / this.slides.length) * 100}%`;
+    this.title.textContent = this.slides[this.current].dataset.title || '';
+    if (updateHash) history.replaceState(null, '', `#slide-${this.current + 1}`);
+  }
+  next() { this.show(this.current + 1); }
+  prev() { this.show(this.current - 1); }
+}
+
+window.deck = new Deck();
+</script>
+</body>
+</html>
