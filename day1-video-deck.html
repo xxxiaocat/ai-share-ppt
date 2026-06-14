@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 · AI工具越多 企业主越焦虑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   THEME — warm desk-light amber palette
+   =========================================== */
+:root {
+  --stage-bg: #2c2416;
+  --slide-bg: #f9f4eb;
+  --paper: #f3ece0;
+  --paper-hl: #ede2cf;
+  --ink: #1a1714;
+  --ink-2: #3d3530;
+  --ink-3: #6b6259;
+  --amber: #b0752a;
+  --amber-deep: #8b5a1a;
+  --amber-light: #d4a556;
+  --amber-glow: rgba(176, 117, 42, 0.08);
+  --amber-line: rgba(176, 117, 42, 0.22);
+  --red: #b83a2a;
+  --green: #3a7b52;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===========================================
+   viewport-base.css — fixed 16:9 stage
+   =========================================== */
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage-bg)}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;background:var(--slide-bg)}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;display:block;visibility:hidden;opacity:0;pointer-events:none;background:var(--slide-bg)}
+.slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+img,video,canvas,svg{max-width:100%;max-height:100%}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important}}
+@media print{html,body{width:1920px;height:auto;overflow:visible;background:#fff}.deck-viewport{position:static;overflow:visible;background:#fff}.deck-stage{position:static;width:auto;height:auto;transform:none!important;background:none}.slide{position:relative;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:1920px;height:1080px;break-after:page}.slide:last-child{break-after:auto}}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ===========================================
+   ANIMATION
+   =========================================== */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .55s var(--ease-out),transform .55s var(--ease-out)}
+.slide.visible .reveal{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.06s}.d2{transition-delay:.18s}.d3{transition-delay:.30s}.d4{transition-delay:.44s}.d5{transition-delay:.58s}
+
+/* ===========================================
+   CUE CARD STYLE — for full-face sections
+   Centered, minimal, 1-2 lines
+   =========================================== */
+.cue-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:56px;text-align:center;
+  padding:120px;
+}
+.cue-big{
+  font-family:'Noto Serif SC',serif;font-size:132px;font-weight:900;
+  color:var(--ink);line-height:1.12;letter-spacing:-0.01em;
+  max-width:1600px;
+}
+.cue-big em{color:var(--amber);font-style:normal}
+.cue-sub{
+  font-family:'DM Sans','Noto Serif SC',sans-serif;font-size:42px;
+  color:var(--ink-3);font-weight:400;line-height:1.4;max-width:1100px;
+}
+
+.cue-tag{
+  position:absolute;top:72px;left:72px;
+  font-family:'DM Sans',monospace;font-size:18px;font-weight:700;
+  color:var(--amber);letter-spacing:.06em;
+  padding:8px 18px;border:1px solid var(--amber-line);border-radius:6px;
+}
+
+.cue-meta{
+  position:absolute;bottom:72px;left:50%;transform:translateX(-50%);
+  font-family:'DM Sans',monospace;font-size:16px;color:var(--ink-3);
+  letter-spacing:.04em;
+}
+
+/* ===========================================
+   INFO CARD STYLE — for PPT-dominant sections
+   Structured, bold, information-rich
+   =========================================== */
+.info-slide{background:var(--slide-bg)}
+
+.info-header{
+  position:absolute;top:64px;left:100px;right:100px;
+  display:flex;align-items:center;gap:24px;
+}
+.info-header .line{flex:1;height:1px;background:var(--amber-line)}
+.info-header .label{
+  font-family:'DM Sans',monospace;font-size:16px;font-weight:700;
+  color:var(--amber);letter-spacing:.08em;text-transform:uppercase;
+}
+
+.info-body{
+  position:absolute;left:100px;top:180px;right:100px;bottom:100px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── TIME CARDS (slide 4) ── */
+.time-cards{
+  display:flex;gap:36px;align-items:stretch;max-width:1700px;width:100%;
+}
+.tcard{
+  flex:1;background:var(--paper);border-radius:24px;padding:64px 40px;
+  border:1px solid rgba(0,0,0,.06);
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;
+}
+.tcard .tool{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:700;color:var(--ink-3)}
+.tcard .arrow{font-family:'DM Sans',monospace;font-size:36px;color:var(--amber)}
+.tcard .minutes{
+  font-family:'DM Sans','Noto Serif SC',sans-serif;font-size:96px;font-weight:800;
+  color:var(--amber);line-height:1;
+}
+.tcard .minutes span{font-size:48px;font-weight:500;color:var(--ink-3)}
+.tcard .label{font-family:'DM Sans',sans-serif;font-size:22px;color:var(--ink-3)}
+
+.tcard.highlight{background:var(--paper-hl);border-color:var(--amber-line)}
+.tcard.highlight .minutes{color:var(--amber-deep)}
+
+.time-conclusion{
+  position:absolute;bottom:120px;left:50%;transform:translateX(-50%);
+  padding:32px 80px;
+  font-family:'Noto Serif SC',serif;font-size:52px;font-weight:900;
+  color:var(--ink);text-align:center;line-height:1.3;
+  border:2px solid var(--amber-line);border-radius:18px;
+  background:var(--amber-glow);
+}
+.time-conclusion em{color:var(--red);font-style:normal}
+
+/* ── FLOW DIAGRAM (slide 5) ── */
+.flow-section{
+  display:flex;flex-direction:column;gap:72px;max-width:1400px;width:100%;
+}
+.flow-row{display:flex;align-items:center;gap:20px}
+.flow-label{
+  font-family:'DM Sans',monospace;font-size:22px;font-weight:700;color:var(--ink-3);
+  width:200px;flex-shrink:0;text-transform:uppercase;letter-spacing:.06em;
+}
+.flow-label.old{color:var(--ink-3)}
+.flow-label.new{color:var(--amber)}
+
+.flow-box{
+  flex:1;height:96px;display:flex;align-items:center;justify-content:center;
+  border-radius:16px;font-family:'DM Sans','Noto Serif SC',sans-serif;
+  font-size:34px;font-weight:800;color:var(--ink);
+}
+.flow-box.gray{background:var(--paper);border:1px solid rgba(0,0,0,.05);opacity:.55}
+.flow-box.amber{background:var(--paper-hl);border:2px solid var(--amber-line)}
+.flow-box.strike{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:3px}
+.flow-box.check{position:relative}
+.flow-box.check::after{content:'✓';position:absolute;right:-16px;top:-28px;font-size:38px;color:var(--green);font-weight:900}
+
+.flow-arrow{
+  font-family:'DM Sans',sans-serif;font-size:36px;color:var(--ink-3);flex-shrink:0;
+}
+
+.flow-case{
+  margin-top:16px;font-family:'DM Sans','Noto Serif SC',sans-serif;
+  font-size:26px;color:var(--ink-3);text-align:left;line-height:1.5;
+  max-width:1100px;
+}
+.flow-case strong{color:var(--amber);font-weight:800}
+
+/* ===========================================
+   CTA SLIDE (slide 7)
+   =========================================== */
+.cta-row{
+  display:flex;gap:80px;align-items:center;
+}
+.cta-next{
+  background:var(--paper);border:1px solid var(--amber-line);border-radius:24px;
+  padding:56px 72px;max-width:900px;
+}
+.cta-next .pre{font-family:'DM Sans',monospace;font-size:20px;color:var(--amber);margin-bottom:16px;font-weight:700}
+.cta-next h2{font-family:'Noto Serif SC',serif;font-size:56px;font-weight:900;color:var(--ink);line-height:1.18}
+.cta-follow{
+  font-family:'DM Sans','Noto Serif SC',sans-serif;font-size:34px;
+  color:var(--ink-2);line-height:1.5;
+}
+
+/* ===========================================
+   PROGRESS / NAV
+   =========================================== */
+.deck-controls{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:1000;
+  display:flex;gap:8px;padding:8px;border-radius:10px;
+  border:1px solid rgba(249,244,235,.15);background:rgba(44,36,22,.76);
+  backdrop-filter:blur(12px);
+}
+.deck-controls button{
+  width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid rgba(249,244,235,.12);border-radius:6px;
+  background:rgba(255,255,255,.06);color:rgba(249,244,235,.8);
+  cursor:pointer;font:700 17px/1 'DM Sans',monospace;
+}
+.deck-controls button:hover{border-color:var(--amber-light);color:var(--amber-light)}
+
+.progress-shell{
+  position:fixed;left:28px;right:28px;bottom:52px;z-index:900;
+  display:grid;grid-template-columns:100px 1fr 200px;gap:14px;align-items:center;
+  color:rgba(249,244,235,.65);font-family:'DM Sans',monospace;font-size:12px;
+  pointer-events:none;
+}
+.progress-track{height:2px;overflow:hidden;background:rgba(249,244,235,.12)}
+.progress-bar{width:0;height:100%;background:var(--amber-light);transition:width .28s ease}
+
+/* ===========================================
+   PAGE NUMBER
+   =========================================== */
+.page-num{
+  position:absolute;right:72px;bottom:72px;
+  font-family:'DM Sans',monospace;font-size:16px;color:var(--ink-3);
+  letter-spacing:.04em;
+}
+
+/* ===========================================
+   SUBTITLE AREA MOCK — where your face goes
+   =========================================== */
+.face-zone{
+  position:absolute;right:60px;top:60px;width:360px;height:480px;
+  border:2px dashed var(--amber-line);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Sans',monospace;font-size:15px;color:var(--ink-3);
+  text-align:center;line-height:1.5;opacity:.6;
+}
+</style>
+</head>
+<body>
+
+<div class="deck-viewport">
+  <main class="deck-stage" id="deckStage"></main>
+</div>
+
+<div class="progress-shell" aria-hidden="true">
+  <span id="slideCounter">01 / 07</span>
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+  <span id="slideTitle">开场</span>
+</div>
+
+<div class="deck-controls" aria-label="翻页">
+  <button id="prevBtn">‹</button>
+  <button id="nextBtn">›</button>
+  <button id="printBtn">P</button>
+</div>
+
+<script>
+const slides=[
+
+// ── SLIDE 1: 0-5s HOOK · 你全出镜 · 极简提示卡 ──
+{title:'开场 · 0-5s',body:`
+  <div class="cue-tag reveal">00:00 · HOOK</div>
+  <div class="cue-center">
+    <div class="cue-big reveal d1">AI 工具越多<br>你越<em>焦虑</em></div>
+    <div class="cue-sub reveal d2">问题根本不在工具</div>
+  </div>
+  <div class="cue-meta reveal d3">真人出镜 · 盯死镜头 · 不铺垫 · 直接炸</div>
+`},
+
+// ── SLIDE 2: 5-15s STORY · 你全出镜 ──
+{title:'故事 · 5-15s',body:`
+  <div class="cue-tag reveal">00:05 · 引子</div>
+  <div class="cue-center">
+    <div class="cue-big reveal d1" style="font-size:96px;max-width:1400px;">7 个 AI 工具<br>生意<em>没变化</em></div>
+    <div class="cue-sub reveal d2">"我每天花 2 小时学 AI，是不是学得太慢了？"</div>
+  </div>
+  <div class="cue-meta reveal d3">讲故事语气 · 外贸老板视角 · 引发共鸣</div>
+`},
+
+// ── SLIDE 3: 15-30s 核心问题 · 你全出镜 · 停顿1.5s ──
+{title:'破题 · 15-30s',body:`
+  <div class="cue-tag reveal">00:15 · 核心</div>
+  <div class="cue-center">
+    <div class="cue-big reveal d1" style="font-size:148px;max-width:1600px;"><em>AI 到底</em><br>要替你解决<br>什么问题？</div>
+  </div>
+  <div class="cue-meta reveal d3">这句说完 · 至少停顿 1.5 秒 · 眼神锁镜头</div>
+`},
+
+// ── SLIDE 4: 30-50s · PPT主导 · 时间卡片 ──
+{title:'时间账 · 30-50s',body:`
+  <div class="info-slide">
+    <div class="info-header reveal">
+      <div class="line"></div>
+      <div class="label">AI 帮你省了多少时间 — 然后呢？</div>
+      <div class="line"></div>
+    </div>
+    <div class="info-body">
+      <div class="time-cards">
+        <div class="tcard reveal d1">
+          <div class="tool">周报</div>
+          <div class="arrow">↓</div>
+          <div class="minutes">30<span>分</span></div>
+          <div class="label">省下来</div>
+        </div>
+        <div class="tcard reveal d2">
+          <div class="tool">PPT</div>
+          <div class="arrow">↓</div>
+          <div class="minutes">1<span>小时</span></div>
+          <div class="label">省下来</div>
+        </div>
+        <div class="tcard highlight reveal d3">
+          <div class="tool">开发信</div>
+          <div class="arrow">↓</div>
+          <div class="minutes">20<span>分</span></div>
+          <div class="label">省下来</div>
+        </div>
+      </div>
+    </div>
+    <div class="time-conclusion reveal d4">一天省了 2 小时 — <em>用在利润上了吗？</em></div>
+    <div class="cue-meta reveal d5" style="right:72px;left:auto;transform:none;">弹卡顺序 = 后期逐张弹出 · 每弹一张切回你半秒</div>
+    <div class="page-num reveal">04</div>
+  </div>
+`},
+
+// ── SLIDE 5: 50-75s · PPT主导 · 流程图 ──
+{title:'方法论 · 50-75s',body:`
+  <div class="info-slide">
+    <div class="info-header reveal">
+      <div class="line"></div>
+      <div class="label">从"学工具"到"画流程"</div>
+      <div class="line"></div>
+    </div>
+    <div class="info-body">
+      <div class="flow-section">
+        
+        <div class="flow-row reveal d1">
+          <div class="flow-label old">以前</div>
+          <div class="flow-box gray strike">装工具</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box gray strike">学 AI</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box gray strike" style="flex:1.5">不知道用来干嘛</div>
+        </div>
+
+        <div class="flow-row reveal d2">
+          <div class="flow-label new">以后</div>
+          <div class="flow-box amber check" style="flex:1.2">画流程</div>
+          <div class="flow-arrow" style="color:var(--amber)">→</div>
+          <div class="flow-box amber" style="flex:1.2">找痛点</div>
+          <div class="flow-arrow" style="color:var(--amber)">→</div>
+          <div class="flow-box amber" style="flex:1.5;font-size:28px;">把 AI 放在对的地方</div>
+        </div>
+
+        <div class="flow-case reveal d3">
+          比如：信贷审批员每天 <strong>70% 时间</strong>花在看材料、核对数据、写初审意见 — 这些全是 AI 该干的事。<br>不画流程？你只会让他帮你<strong>写周报</strong>。
+        </div>
+      </div>
+    </div>
+    <div class="cue-meta reveal d4" style="right:72px;left:auto;transform:none;">金融行业真实经验 → 方法论核心 → 例子证明</div>
+    <div class="page-num reveal">05</div>
+  </div>
+`},
+
+// ── SLIDE 6: 75-95s 回扣 · 你全出镜 ──
+{title:'回扣 · 75-95s',body:`
+  <div class="cue-tag reveal">01:15 · 闭环</div>
+  <div class="cue-center">
+    <div class="cue-big reveal d1">不是学得太慢<br>是<em>学反了</em></div>
+    <div class="cue-sub reveal d2">工具是最后一环，不是第一环</div>
+  </div>
+  <div class="cue-meta reveal d3">回到那个外贸老板的故事 · 形成信任闭环</div>
+`},
+
+// ── SLIDE 7: 95-105s 钩子 · 你全出镜 ──
+{title:'钩子 · 95-105s',body:`
+  <div class="cue-tag reveal">01:35 · 钩子</div>
+  <div class="cue-center" style="gap:72px;">
+    <div class="cue-big reveal d1" style="font-size:80px;max-width:1200px;line-height:1.22;">关注我</div>
+    <div class="cta-next reveal d2" style="background:var(--paper-hl);">
+      <div class="pre">下期预告</div>
+      <h2>我见过最聪明的老板<br>为什么<em>反而不急着用 AI</em>？</h2>
+    </div>
+  </div>
+  <div class="cue-meta reveal d3">不说"点赞收藏转发" · 自然收尾 · 随手一说</div>
+`}
+
+];
+
+// ── RENDER ──
+function render(s,i){
+  const t=String(slides.length).padStart(2,'0');
+  const p=String(i+1).padStart(2,'0');
+  const cls=['slide',i===0?'active visible':''].filter(Boolean).join(' ');
+  return `<section class="${cls}" data-title="${s.title}">${s.body}</section>`;
+}
+document.getElementById('deckStage').innerHTML=slides.map(render).join('');
+
+// ── CONTROLLER ──
+class Deck{
+  constructor(){
+    this.stage=document.getElementById('deckStage');
+    this.slides=Array.from(document.querySelectorAll('.slide'));
+    this.counter=document.getElementById('slideCounter');
+    this.progress=document.getElementById('progressBar');
+    this.title=document.getElementById('slideTitle');
+    this.current=0;this.lastWheel=0;
+    this.fit();this.bind();this.show(0,false);
+    window.addEventListener('resize',()=>this.fit());
+  }
+  fit(){
+    const s=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+    this.stage.style.transform=`translate(${(window.innerWidth-1920*s)/2}px,${(window.innerHeight-1080*s)/2}px) scale(${s})`;
+  }
+  bind(){
+    document.getElementById('prevBtn').addEventListener('click',()=>this.prev());
+    document.getElementById('nextBtn').addEventListener('click',()=>this.next());
+    document.getElementById('printBtn').addEventListener('click',()=>window.print());
+    document.addEventListener('keydown',e=>{
+      if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();this.next()}
+      if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();this.prev()}
+      if(e.key==='Home'){e.preventDefault();this.show(0)}
+      if(e.key==='End'){e.preventDefault();this.show(this.slides.length-1)}
+    });
+    document.addEventListener('wheel',e=>{
+      const n=Date.now();
+      if(n-this.lastWheel<520||Math.abs(e.deltaY)<28)return;
+      this.lastWheel=n;e.deltaY>0?this.next():this.prev();
+    },{passive:true});
+    let sx=0,sy=0;
+    document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+    document.addEventListener('touchend',e=>{
+      const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+      if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy))dx<0?this.next():this.prev();
+    },{passive:true});
+  }
+  show(i,uh=true){
+    this.current=Math.max(0,Math.min(i,this.slides.length-1));
+    this.slides.forEach((s,x)=>{
+      s.classList.toggle('active',x===this.current);
+      s.classList.toggle('visible',x===this.current);
+    });
+    const n=String(this.current+1).padStart(2,'0'),t=String(this.slides.length).padStart(2,'0');
+    this.counter.textContent=`${n} / ${t}`;
+    this.progress.style.width=`${((this.current+1)/this.slides.length)*100}%`;
+    this.title.textContent=this.slides[this.current].dataset.title||'';
+    if(uh)history.replaceState(null,'',`#slide-${this.current+1}`);
+  }
+  next(){this.show(this.current+1)}
+  prev(){this.show(this.current-1)}
+}
+window.deck=new Deck();
+</script>
+</body>
+</html>
