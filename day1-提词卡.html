@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 1 · 提词卡</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; color: #fff; font-family: 'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif; padding: 40px 60px; }
+  h1 { font-size: 36px; margin-bottom: 8px; color: #d4a556; }
+  .meta { color: #888; font-size: 18px; margin-bottom: 40px; }
+  
+  .cue-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .cue-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 28px 26px;
+    display: flex; flex-direction: column;
+  }
+  .cue-card.killer { border-color: #d4a556; background: #1a1610; }
+  
+  .seg { font-size: 14px; color: #d4a556; margin-bottom: 6px; font-weight: 700; letter-spacing: 0.04em; }
+  .time { display: inline-block; font-size: 12px; color: #666; padding: 3px 8px; border: 1px solid #333; border-radius: 4px; margin-bottom: 18px; width: fit-content; }
+  .cue-text { font-size: 26px; font-weight: 800; line-height: 1.45; color: #eee; }
+  .cue-text .gold { color: #d4a556; }
+  .cue-text .red { color: #e05a4f; }
+  .cue-arrow { color: #d4a556; font-size: 18px; margin: 8px 0; font-weight: 700; }
+  .note { font-size: 14px; color: #555; margin-top: auto; padding-top: 16px; line-height: 1.5; }
+  
+  .footer-note { margin-top: 48px; padding: 20px 28px; border: 1px solid #333; border-radius: 10px; color: #555; font-size: 16px; line-height: 1.8; }
+  .footer-note strong { color: #d4a556; }
+
+  @media print {
+    body { background: #fff; color: #000; padding: 30px 40px; }
+    .cue-card { background: #fff; border-color: #ccc; }
+    .cue-card.killer { border-color: #b8860b; background: #fffdf5; }
+    .cue-text { color: #111; }
+    .time { color: #888; border-color: #ccc; }
+    .note { color: #888; }
+    .footer-note { border-color: #ccc; color: #666; }
+    .meta { color: #666; }
+    h1 { color: #b8860b; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 1 · 提词卡</h1>
+<div class="meta">105 秒 | 8 段 | 隔 2-3 秒看一眼，别念</div>
+
+<div class="cue-grid">
+
+  <div class="cue-card killer">
+    <div class="seg">01 HOOK</div>
+    <div class="time">0-5s</div>
+    <div class="cue-text">
+      AI工具越多<br>你越<span class="red">焦虑</span><br><br>
+      问题<br><span class="gold">不在工具</span>
+    </div>
+    <div class="note">盯镜头。不铺垫。直接炸。</div>
+  </div>
+
+  <div class="cue-card">
+    <div class="seg">02 故事</div>
+    <div class="time">5-15s</div>
+    <div class="cue-text">
+      外贸老板<br>
+      <span class="gold">7个AI工具</span><br>
+      每天花2小时学<br><br>
+      生意<span class="gold">没变化</span><br>
+      "我是不是太慢了？"
+    </div>
+    <div class="note">讲故事语气。慢一点。</div>
+  </div>
+
+  <div class="cue-card killer">
+    <div class="seg">03 破题</div>
+    <div class="time">15-30s</div>
+    <div class="cue-text">
+      你不慢。<br><br>
+      你没回答一个问题：<br><br>
+      AI到底要替你<br>
+      <span class="gold">解决什么？</span>
+    </div>
+    <div class="note">⭐ 说完停顿1.5秒</div>
+  </div>
+
+  <div class="cue-card">
+    <div class="seg">04 数字冲击</div>
+    <div class="time">30-50s</div>
+    <div class="cue-text">
+      周报 → 省<span class="gold">30分</span><br>
+      PPT → 省<span class="gold">1小时</span><br>
+      开发信 → 省<span class="gold">20分</span><br>
+      <span class="cue-arrow">一天省2小时 ↓</span>
+      <span class="red">用在利润上了吗？</span>
+    </div>
+    <div class="note">辅助画面：卡片弹出</div>
+  </div>
+
+  <div class="cue-card killer">
+    <div class="seg">05 方法论</div>
+    <div class="time">50-75s</div>
+    <div class="cue-text">
+      金融AI落地<br>
+      <span class="gold">第一课：先画图</span><br><br>
+      旧：装工具 → 学AI → 不知道干嘛<br>
+      <span class="gold">新：画流程 → 找痛点 → 放AI</span><br><br>
+      信贷审批员<br>
+      70%时间 = AI该干的
+    </div>
+    <div class="note">手指比划"画图"</div>
+  </div>
+
+  <div class="cue-card">
+    <div class="seg">06 回扣</div>
+    <div class="time">75-95s</div>
+    <div class="cue-text">
+      回到那个老板<br><br>
+      不是学得<span class="red">太慢</span><br>
+      是<span class="gold">学反了</span><br><br>
+      工具是最后一环<br>
+      <span class="gold">不是第一环</span>
+    </div>
+    <div class="note">语气放缓，留白</div>
+  </div>
+
+  <div class="cue-card">
+    <div class="seg">07 钩子</div>
+    <div class="time">95-105s</div>
+    <div class="cue-text">
+      关注我<br><br>
+      金融、法律<br>
+      真实案例<br>
+      帮你找答案<br><br>
+      <span class="gold">下期：</span><br>
+      聪明老板<br>
+      反而不急着用AI
+    </div>
+    <div class="note">自然收尾。不喊口号。</div>
+  </div>
+
+  <div class="cue-card" style="border-color:#333;background:#111;">
+    <div class="seg" style="color:#888;">RECALL</div>
+    <div class="cue-text" style="color:#888;font-size:20px;line-height:1.6;">
+      <span class="gold">3个关键句</span><br><br>
+      1. 问题不在工具<br>
+      2. AI到底解决什么<br>
+      3. 不是太慢，是学反了
+    </div>
+    <div class="note" style="color:#555;">开拍前过一遍这三句</div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  <strong>拍摄用：</strong> 打印出来放镜头旁 · 或开在手机/平板放镜头下方 · 
+  <strong>2-3秒扫一眼</strong> · 别看太久 · 
+  <strong>看了→记住关键词→看回镜头→说出来</strong> · 
+  声音不完美 > 完美念稿
+</div>
+
+</body>
+</html>
